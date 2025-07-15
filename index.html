@@ -52,7 +52,7 @@
                 Piętro
             </td>
             <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                <span class="center smaller_cena_text crossed__cena_text">296 925 zł</span>
+                <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
                 <span class="center">296 925 zł</span>
                 <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
                 <span class="center smaller_cena_text">296 925 zł</span>
@@ -100,7 +100,7 @@
                 Piętro
             </td>
             <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                <span class="center smaller_cena_text crossed__cena_text">296 925 zł</span>
+                <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
                 <span class="center">296 925 zł</span>
                 <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
                 <span class="center smaller_cena_text">296 925 zł</span>
@@ -136,6 +136,11 @@
 </table>
 </div>
 <style>
+
+   
+
+
+
     .popup{
         opacity: 0;
         pointer-events: auto;
@@ -176,7 +181,7 @@
         line-height: normal;
     }
     td{
-        padding: 10px 10px 10px 20px;
+        padding: 10px 10px 10px 10px;
         align-items: center;
         gap: 10px;
         font-size: 22px;
@@ -199,7 +204,7 @@
         line-height: normal;
     }
 
-    .crossed__cena_text{
+    .crossed_cena_text{
         color: var(--IKONY_DEFAULT);
         text-align: center;
         font-size: 16px;
@@ -209,6 +214,76 @@
         text-decoration-line: line-through;
         white-space: nowrap;
     }
+
+    
+    @media screen and (max-width: 1450px) {
+        .center{
+            font-size: 18px;
+        }
+
+        table{
+            font-size: 12px;
+        }
+
+        td{
+            font-size: 18px;
+        }
+
+        .smaller_cena_text{
+            font-size: 8px;
+        }
+
+        .crossed_cena_text{
+            font-size: 12px;
+        }
+    }
+
+    @media screen and (max-width: 1150px) {
+        .center{
+            font-size: 14px;
+        }
+
+        table{
+            font-size: 10px;
+        }
+
+        td{
+            min-height: 60px;
+            font-size: 14px;
+        }
+
+        .smaller_cena_text{
+            font-size: 8px;
+        }
+
+        .crossed_cena_text{
+            font-size: 10px;
+        }
+    }
+
+    @media screen and (max-width: 991px) {
+        .center{
+            font-size: 10px;
+        }
+
+        table{
+            font-size: 10px;
+        }
+
+        td{
+            font-size: 10px;
+        }
+
+        .smaller_cena_text{
+            font-size: 8px;
+        }
+
+        .crossed_cena_text{
+            font-size: 10px;
+        }
+    }
+
+    /* potem ukryć zmienić na coś innego te wyszukiware */
 </style>
 
 
@@ -244,7 +319,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">125</span><span> zl/mis.</span>
+                            <span class="cena_opcji">125</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -255,7 +330,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">1</span><span> zl/mis.</span>
+                            <span class="cena_opcji">1</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -266,7 +341,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">153</span><span> zl/mis.</span>
+                            <span class="cena_opcji">153</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -277,7 +352,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -288,7 +363,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -299,7 +374,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -310,7 +385,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -321,7 +396,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -332,7 +407,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -343,7 +418,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                 </ul>
@@ -377,7 +452,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -388,7 +463,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -399,7 +474,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -410,7 +485,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -421,7 +496,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -432,7 +507,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -443,7 +518,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -454,7 +529,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -465,7 +540,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -476,7 +551,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                 </ul>
@@ -508,7 +583,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -519,7 +594,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -530,7 +605,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -541,7 +616,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -552,7 +627,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -563,7 +638,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -574,7 +649,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -585,7 +660,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -596,7 +671,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                     <li>
@@ -607,7 +682,7 @@
                             komorka nr 1
                         </div>
                         <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
                         </div>
                     </li>
                 </ul>
@@ -739,6 +814,7 @@
     .laczna_cena {
         padding: 0 18px;
         font-weight: bold;
+        text-align: right;
     }
 
     .dodaj_do_koszyka_btn {
