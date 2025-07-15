@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+    </style>
+</head>
+<body>
+
+<div class="container" id="wyszukiwarka">
+<table class="apartamenty_table">
+    <thead>
+        <tr>
+            <th class="center">Typ</th>
+            <th class="center">Nazwa inewstycji</th>
+            <th class="center">Numer</th>
+            <th class="center">Pokoje</th>
+            <th class="center">Piętro</th>
+            <th class="center">Pow.</th>
+            <th class="center">Cena [zł]</th>
+            <th class="center">Status</th>
+            <th class="center">Rzut</th>
+            <th class="center">Wirtualny<br/>spacer</th>
+            <th class="center">Widok 3D</th>
+            <th class="center">Wybierz</th>
+        </tr>
+    </thead>
+    <tbody style="opacity: 0; height: 20px;"></tbody>
+    <tbody id="apartament_table_body">
+        <tr style="cursor: pointer;">
+            <td class="center">
+                Typ
+            </td>
+            <td class="center">
+                Nazwa
+            </td>
+            <td class="center">
+                Numer
+            </td>
+            <td class="center">
+                Pokoje
+            </td>
+            <td class="center">
+                Piętro
+            </td>
+            <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
+                <span class="center smaller_cena_text crossed__cena_text">296 925 zł</span>
+                <span class="center">296 925 zł</span>
+                <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                <span class="center smaller_cena_text">296 925 zł</span>
+            </td>
+            <td class="center">
+                Status
+            </td>
+            <td class="center">
+                Rzut
+            </td>
+            <td class="center">
+                Wirtualny
+            </td>
+            <td class="center">
+                Widok
+            </td>
+            <td class="center">
+                Widok
+            </td>
+            <td class="center" onclick="togglePopup(this)">
+                <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
+                    Dodatki
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                            <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                        </svg>
+                    </div>
+                </div>
+            </td>
+        </tr>
+                <tr style="cursor: pointer;">
+            <td class="center">
+                Typ
+            </td>
+            <td class="center">
+                Nazwa
+            </td>
+            <td class="center">
+                Numer
+            </td>
+            <td class="center">
+                Pokoje
+            </td>
+            <td class="center">
+                Piętro
+            </td>
+            <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
+                <span class="center smaller_cena_text crossed__cena_text">296 925 zł</span>
+                <span class="center">296 925 zł</span>
+                <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                <span class="center smaller_cena_text">296 925 zł</span>
+            </td>
+            <td class="center">
+                Status
+            </td>
+            <td class="center">
+                Rzut
+            </td>
+            <td class="center">
+                Wirtualny
+            </td>
+            <td class="center">
+                Widok
+            </td>
+            <td class="center">
+                Widok
+            </td>
+            <td class="center" onclick="togglePopup(this)">
+                <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
+                    Dodatki
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                            <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                        </svg>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tbody>
+    </tbody>
+</table>
+</div>
+<style>
+    .popup{
+        opacity: 0;
+        pointer-events: auto;
+    }
+    :root{
+        --Background: #F9F9F9; 
+    }
+    
+    .container{
+        width: 100%;
+        background-color: var(--Background);
+    }
+
+    .apartamenty_table{
+        width: 80%;
+        border-spacing: 0 5px;
+        justify-self: center;
+    }
+
+    .center{
+        text-align: center;
+        font-size: 22px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        white-space: nowrap;
+    }
+
+    tbody{
+        background-color: var(--SZARY)
+    }
+    table{
+        border-spacing: 0 5px;
+        color: var(--Czarny);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+    td{
+        padding: 10px 10px 10px 20px;
+        align-items: center;
+        gap: 10px;
+        font-size: 22px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        min-height: 80px;
+        justify-items: center;
+        align-items: center;
+        place-content: center;
+    }
+    .smaller_cena_text {
+        white-space: nowrap;
+        color: var(--IKONY_DEFAULT);
+        text-align: center;
+        font-family: "Azo Sans";
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+
+    .crossed__cena_text{
+        color: var(--IKONY_DEFAULT);
+        text-align: center;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        text-decoration-line: line-through;
+        white-space: nowrap;
+    }
+</style>
+
+
+
+
+<div class="popup" id="dodatki_popup">
+    <div class="popup_exit_btn" onclick="togglePopup(this)">
+        <div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
+                <path d="M12.6859 10.5445C13.1047 10.9633 13.1047 11.6423 12.6859 12.061C12.2671 12.4798 11.5881 12.4798 11.1693 12.061L1.05896 1.95067C0.640177 1.53189 0.640177 0.852901 1.05896 0.434116C1.47775 0.0153308 2.15673 0.0153308 2.57552 0.434116L12.6859 10.5445Z" fill="#020C25"/>
+                <path d="M11.1693 0.434084C11.5881 0.0152988 12.2671 0.0152988 12.6859 0.434084C13.1047 0.852869 13.1047 1.53185 12.6859 1.95064L2.57552 12.061C2.15673 12.4798 1.47775 12.4798 1.05896 12.061C0.640177 11.6422 0.640177 10.9632 1.05896 10.5445L11.1693 0.434084Z" fill="#020C25"/>
+            </svg>
+        </div>
+    </div>
+    
+    <div class="content">
+        <div class="sort_po">
+            Sortuj po cenie:
+            <select name="sort_by_price" id="sort_by_price">
+                <option value="chapest">Od Najtaszej</option>
+                <option value="expensiviestxd">Od Najdroższej</option>
+            </select>
+        </div>
+        <div class="wybory">
+            <div class="options_wybory">
+                <div class="options_title">KOMÓRKA</div>
+                <ul class="popup_ul">
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">125</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">1</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">153</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="btn_zwin">
+                    <span>ROZWIŃ</span>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                            <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                        </svg>
+                    </div>
+                </div>
+                <a class="zobacz_na_planie" href="#">
+                    ZOBACZ NA PLANIE
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="28" viewBox="0 0 27 28" fill="none">
+                            <path d="M26.358 3.83447H7.07118C6.90122 3.83447 6.73828 3.90212 6.61701 4.02253L0.188148 10.4515C0.0685897 10.5719 0 10.7351 0 10.9057V23.7626C0 24.1177 0.287717 24.4057 0.642128 24.4057H26.3579C26.7123 24.4057 27 24.1177 27 23.7626V4.47755C27.0001 4.12247 26.7124 3.83447 26.358 3.83447ZM25.7139 23.1204H1.28615V11.5486H7.07118C7.42739 11.5486 7.71511 11.2606 7.71511 10.9056V5.11977H25.7139V23.1204Z" fill="#979BA6"/>
+                            <path d="M5.78495 13.4767C5.43044 13.4767 5.14282 13.7647 5.14282 14.1198V18.9417C5.14282 19.2968 5.43044 19.584 5.78495 19.584H21.8572C22.2117 19.584 22.4994 19.2968 22.4994 18.9417V9.29835C22.4994 8.94328 22.2117 8.65613 21.8572 8.65613H15.4283C15.0738 8.65613 14.7862 8.94328 14.7862 9.29835V13.4766H5.78495V13.4767ZM18.0006 14.7629V18.2988H10.9279V14.7629H18.0006ZM6.42888 14.7629H9.64341V18.2988H6.42888V14.7629ZM19.285 18.2987V14.7628H21.2151V18.2987H19.285ZM21.2152 9.94152V13.4767H16.0724V9.94152H21.2152Z" fill="#979BA6"/>
+                        </svg>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="options_wybory">
+                <div class="options_title">KOMÓRKA</div>
+                <ul class="popup_ul">
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="btn_zwin">
+                    <span>ROZWIŃ</span>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                            <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                        </svg>
+                    </div>
+                </div>
+                <a class="zobacz_na_planie" href="#">
+                    ZOBACZ NA PLANIE
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="28" viewBox="0 0 27 28" fill="none">
+                            <path d="M26.358 3.83447H7.07118C6.90122 3.83447 6.73828 3.90212 6.61701 4.02253L0.188148 10.4515C0.0685897 10.5719 0 10.7351 0 10.9057V23.7626C0 24.1177 0.287717 24.4057 0.642128 24.4057H26.3579C26.7123 24.4057 27 24.1177 27 23.7626V4.47755C27.0001 4.12247 26.7124 3.83447 26.358 3.83447ZM25.7139 23.1204H1.28615V11.5486H7.07118C7.42739 11.5486 7.71511 11.2606 7.71511 10.9056V5.11977H25.7139V23.1204Z" fill="#979BA6"/>
+                            <path d="M5.78495 13.4767C5.43044 13.4767 5.14282 13.7647 5.14282 14.1198V18.9417C5.14282 19.2968 5.43044 19.584 5.78495 19.584H21.8572C22.2117 19.584 22.4994 19.2968 22.4994 18.9417V9.29835C22.4994 8.94328 22.2117 8.65613 21.8572 8.65613H15.4283C15.0738 8.65613 14.7862 8.94328 14.7862 9.29835V13.4766H5.78495V13.4767ZM18.0006 14.7629V18.2988H10.9279V14.7629H18.0006ZM6.42888 14.7629H9.64341V18.2988H6.42888V14.7629ZM19.285 18.2987V14.7628H21.2151V18.2987H19.285ZM21.2152 9.94152V13.4767H16.0724V9.94152H21.2152Z" fill="#979BA6"/>
+                        </svg>
+                    </div>
+                </a>
+            </div>            <div class="options_wybory">
+                <div class="options_title">KOMÓRKA</div>
+                <ul class="popup_ul">
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                        </div>
+                        <div class="nazwa_opcja">
+                            komorka nr 1
+                        </div>
+                        <div class="wartosc_opcja">
+                            <span class="cena_opcji">123</span><span> zl/mis.</span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="btn_zwin">
+                    <span>ROZWIŃ</span>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                            <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                        </svg>
+                    </div>
+                </div>
+                <a class="zobacz_na_planie" href="#">
+                    ZOBACZ NA PLANIE
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="28" viewBox="0 0 27 28" fill="none">
+                            <path d="M26.358 3.83447H7.07118C6.90122 3.83447 6.73828 3.90212 6.61701 4.02253L0.188148 10.4515C0.0685897 10.5719 0 10.7351 0 10.9057V23.7626C0 24.1177 0.287717 24.4057 0.642128 24.4057H26.3579C26.7123 24.4057 27 24.1177 27 23.7626V4.47755C27.0001 4.12247 26.7124 3.83447 26.358 3.83447ZM25.7139 23.1204H1.28615V11.5486H7.07118C7.42739 11.5486 7.71511 11.2606 7.71511 10.9056V5.11977H25.7139V23.1204Z" fill="#979BA6"/>
+                            <path d="M5.78495 13.4767C5.43044 13.4767 5.14282 13.7647 5.14282 14.1198V18.9417C5.14282 19.2968 5.43044 19.584 5.78495 19.584H21.8572C22.2117 19.584 22.4994 19.2968 22.4994 18.9417V9.29835C22.4994 8.94328 22.2117 8.65613 21.8572 8.65613H15.4283C15.0738 8.65613 14.7862 8.94328 14.7862 9.29835V13.4766H5.78495V13.4767ZM18.0006 14.7629V18.2988H10.9279V14.7629H18.0006ZM6.42888 14.7629H9.64341V18.2988H6.42888V14.7629ZM19.285 18.2987V14.7628H21.2151V18.2987H19.285ZM21.2152 9.94152V13.4767H16.0724V9.94152H21.2152Z" fill="#979BA6"/>
+                        </svg>
+                    </div>
+                </a>
+
+                <a href="#" class="zobacz_lokal_btn">
+                    ZOBACZ LOKAL
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="popup_footer">
+        <div class="laczna_cena">
+            <span class="text_cena">
+                ŁĄCZNA CENA MIESZKANIA
+            </span>
+            <span class="cena">
+                12465 zł
+            </span>
+        </div>
+        <div class="dodaj_do_koszyka_btn">
+            DODAJ DO KOSZYKA
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="23" viewBox="0 0 25 23" fill="none">
+                    <path d="M18.1861 17.5063C17.7377 17.5068 17.2989 17.634 16.9219 17.8726C16.5449 18.1112 16.2456 18.4513 16.0594 18.8523H12.5804C12.3946 18.4509 12.0951 18.1105 11.7179 17.8718C11.3406 17.633 10.9014 17.5061 10.4528 17.5061C10.0041 17.5061 9.56495 17.633 9.18768 17.8718C8.81041 18.1105 8.51097 18.4509 8.32512 18.8523H7.11114V15.0294H17.0771C19.7181 15.0294 27.0765 3.66692 24.4375 3.66692H7.11114V0.119995H1.06579C0.783122 0.119995 0.512039 0.230398 0.312165 0.426911C0.112291 0.623425 0 0.88995 0 1.16786C0 1.44577 0.112291 1.7123 0.312165 1.90881C0.512039 2.10533 0.783122 2.21573 1.06579 2.21573H4.97759V20.95H8.42325C8.6251 21.3048 8.91953 21.6002 9.27618 21.8058C9.63284 22.0115 10.0388 22.1199 10.4523 22.1199C10.8657 22.1199 11.2717 22.0115 11.6284 21.8058C11.985 21.6002 12.2794 21.3048 12.4813 20.95H16.1576C16.4031 21.3803 16.7833 21.7211 17.2416 21.9219C17.7 22.1226 18.212 22.1724 18.7016 22.064C19.1911 21.9556 19.6319 21.6947 19.9585 21.3201C20.285 20.9455 20.4798 20.4773 20.514 19.9851C20.514 19.9542 20.5326 19.9282 20.5326 19.8963C20.5312 19.8866 20.5292 19.8769 20.5267 19.8674C20.5267 19.8471 20.5326 19.8279 20.5326 19.8076C20.5313 19.1967 20.2835 18.6112 19.8435 18.1797C19.4036 17.7482 18.8075 17.5061 18.1861 17.5063ZM21.1146 5.82152C22.7545 5.82152 18.1861 12.8758 16.5452 12.8758H7.11015V5.82152H21.1146ZM10.4528 20.9143C10.3056 20.9143 10.1599 20.8858 10.024 20.8304C9.8881 20.775 9.76462 20.6938 9.66063 20.5915C9.55664 20.4892 9.47416 20.3677 9.41795 20.234C9.36173 20.1003 9.33287 19.9571 9.333 19.8124C9.34395 19.5239 9.46547 19.2502 9.67316 19.0462C9.88086 18.8422 10.1594 18.723 10.4528 18.7124C10.6329 18.7165 10.8092 18.7642 10.966 18.8514C11.1475 18.9419 11.3 19.0799 11.4068 19.2501C11.5136 19.4203 11.5706 19.6162 11.5715 19.8163C11.5705 20.1074 11.4522 20.3863 11.2425 20.5919C11.0329 20.7975 10.7489 20.914 10.4528 20.9143ZM18.1871 20.9143C18.04 20.9143 17.8943 20.8858 17.7583 20.8304C17.6224 20.775 17.4989 20.6938 17.3949 20.5915C17.291 20.4892 17.2085 20.3677 17.1523 20.234C17.0961 20.1003 17.0672 19.9571 17.0673 19.8124C17.0783 19.5239 17.1998 19.2502 17.4075 19.0462C17.6152 18.8422 17.8937 18.723 18.1871 18.7124C18.3672 18.7165 18.5435 18.7642 18.7003 18.8514C18.8817 18.942 19.0342 19.08 19.141 19.2502C19.2478 19.4204 19.3049 19.6162 19.3059 19.8163C19.3048 20.1074 19.1865 20.3863 18.9769 20.5919C18.7672 20.7975 18.4832 20.914 18.1871 20.9143Z" fill="#020C24"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    :root {
+        --IKONY_DEFAULT: #979BA6;
+        --SECONDARY: #EC964F;
+        --SZARY: #EFEFEF;
+        --HOVER: #D5D5D5;
+        --Czarny: #000000;
+        --Biały: #FFFFFF;
+        --ETYKIETA_WOLNE: #01B635;
+        --SECONDARYHOVER: #E77B21;
+    }
+
+    .popup {
+        background-color: white;
+        justify-self: center;
+        margin: 40px auto;
+        box-shadow: 7px 7px 36px 0px rgba(0, 0, 0, 0.25);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .popup_exit_btn {
+        position: relative;
+        align-self: flex-end;
+        cursor: pointer;
+        background-color: var(--SZARY);
+        justify-items: center;
+        align-items: center;
+        width: 43px;
+        height: 43px;
+        border-radius: 50%;
+        place-content: center;
+        transition: all 0.5s ease;
+    }
+
+    .popup_exit_btn:hover {
+        background-color: var(--HOVER)
+    }
+    
+    .content {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .sort_po {
+        font-weight: bold;
+        margin-bottom: 8px;
+        text-align: left;
+        padding-left: 50px;
+        color: var(--IKONY_DEFAULT);
+        font-size: 14px;
+    }
+
+    .wybory {
+        background-color: #eee;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+    }
+    
+    .options_wybory {
+        background-color: white;
+        padding-left: 50px;
+        padding-right: 50px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .popup_footer {
+        background-color: #f5f5f5;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        width: 100%;
+        margin-top: 30px;
+    }
+
+    .laczna_cena {
+        padding: 0 18px;
+        font-weight: bold;
+    }
+
+    .dodaj_do_koszyka_btn {
+        padding: 18px 18px;
+        background-color: var(--SECONDARY);
+        color: var(--Czarny);
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 19px;
+        font-weight: 600;
+        transition: all 0.5s ease;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        justify-items: center;
+        align-items: center;
+    }
+
+    .dodaj_do_koszyka_btn:hover{
+        background-color: var(--SECONDARYHOVER);
+    }
+
+    .popup_ul{
+        padding: 0;
+        max-height: 300px;
+        overflow-y: auto;
+        padding-right: 20px;
+        box-sizing: border-box;
+        width: 100%;
+        scrollbar-gutter: stable;
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+
+    .popup_ul li{
+        display: flex;
+        flex-direction: row;
+        text-wrap: nowrap;
+        gap: 15px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .nazwa_opcja{
+        color: var(--Czarny);
+    }
+
+    
+    .wartosc_opcja{
+        color: var(--IKONY_DEFAULT);
+    }
+
+    .btn_zwin{
+        align-self: self-end;
+        border: 1px solid var(--IKONY_DEFAULT);
+        color: var(--Czarny);
+        padding: 10px 20px 10px 20px;
+        font-size: 12px;
+        line-height: 19px;
+        font-weight: 600;
+        display: flex;
+        flex-direction: row;
+        justify-items: center;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        transition: all 0.5s ease;
+    }
+
+    .btn_zwin:hover{
+        background-color: var(--SZARY);
+    }
+
+    .zobacz_na_planie{
+        align-self: self-end;
+        color: var(--IKONY_DEFAULT);
+        margin-top: 20px;
+        font-size: 14px;
+        line-height: 19px;
+        font-weight: 600;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        justify-items: center;
+        align-items: center;
+        text-decoration: none;
+        padding-bottom: 30px;
+    }
+
+    .text_cena{
+        color: var(--IKONY_DEFAULT);
+        font-size: 16px;
+        line-height: 19px;
+        font-weight: 600;
+    }
+
+    .cena{
+        color: var(--Czarny);
+        font-size: 16px;
+        line-height: 19px;
+        font-weight: 600;
+    }
+
+    .options_title{
+        font-size: 16px;
+        color: var(--Czarny);
+        padding-top: 30px;
+    }
+
+    .option_radio{
+        border: var(--SECONDARY);
+    }
+
+    #sort_by_price {
+        cursor: pointer;
+        border: 0;
+        outline: none;
+        box-shadow: none;
+    }
+
+    #sort_by_price:focus {
+        border: 0;
+        outline: none;
+        box-shadow: none;
+    }
+
+    #sort_by_price:active {
+        border: 0;
+        outline: none;
+        box-shadow: none;
+    }
+
+
+
+    @media screen and (max-width: 1130px) {
+        .wybory{
+            grid-template-columns: repeat(1, 1fr);
+        }
+    }
+</style>
+
+
+</body>
+</html>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+  document.querySelectorAll('.myradio').forEach(el => {
+    el.addEventListener('click', function (e) {
+      const input = el.querySelector('input[type="radio"]');
+      const checked = el.classList.toggle('myradio-checked');
+      if (input) input.checked = checked;
+    });
+  });
+});
+</script>
+<style>
+.myradio {
+  border: 2px solid var(--IKONY_DEFAULT);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  position: relative;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+  border-color: var(--SECONDARY);
+  
+}
+
+.myradio::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background-color: var(--SECONDARY);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.2s ease;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.myradio.myradio-checked {
+  border-color: var(--SECONDARY);
+}
+
+.myradio.myradio-checked::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+.zobacz_lokal_btn{
+    align-self: right;
+    background-color: var(--Czarny);
+    color: white;
+    display: flex;
+    padding: 18px 26px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 19px;
+    align-self: self-end;
+    margin-top: 50px;
+}
+</style>
+
+
+<script>
+    // mechanizm zwin/rozwin
+    const zwin_btns = document.getElementsByClassName('btn_zwin');
+    Array.from(zwin_btns).forEach(btn => {
+        let expanded = false;
+        const optionsWybory = btn.closest('.options_wybory');
+        const popupUl = optionsWybory ? optionsWybory.querySelector('.popup_ul') : null;
+        if (!popupUl) return;
+        const elementy_listy = popupUl.children;
+
+        //hide by default
+        Array.from(elementy_listy).forEach((element, index) => {
+            if (index > 2) {
+                element.style.display = 'none';
+            }
+        });
+
+        btn.addEventListener('click', (e) => {
+            if (expanded) {
+                btn.children[0].textContent = 'ROZWIŃ';
+                btn.children[1].style.transform = "rotate(0deg)";
+                Array.from(elementy_listy).forEach((element, index) => {
+                    if (index > 2) {
+                        element.style.display = 'none';
+                    }
+                });
+            } else {
+                btn.children[0].textContent = 'ZWIŃ';
+                btn.children[1].style.transform = "rotate(180deg)";
+                Array.from(elementy_listy).forEach(element => {
+                    element.style.display = 'flex';
+                });
+            }
+            expanded = !expanded;
+        });
+    });
+</script>
+
+<script>
+    // sortowanie po cenie
+    const select = document.getElementById('sort_by_price');
+    const uls = document.getElementsByClassName('popup_ul');
+
+    function sort(by = 'asc') {
+        Array.from(uls).forEach(ul => {
+            const lis = Array.from(ul.children);
+            lis.sort((a, b) => {
+                const cenaA = parseFloat(a.querySelector('.cena_opcji').textContent) || 0;
+                const cenaB = parseFloat(b.querySelector('.cena_opcji').textContent) || 0;
+                return by === 'asc' ? cenaA - cenaB : cenaB - cenaA;
+            });
+            lis.forEach(li => ul.appendChild(li));
+        });
+    }
+
+    select.addEventListener('change', function (e) {
+        const selected_value = select.value;
+        switch(selected_value)
+        {
+            case 'chapest':
+                sort('asc');
+                break;
+            case 'expensiviestxd':
+                sort('desc');
+                break;
+            default:
+                break;
+        }
+    });
+</script>
+
+<style>
+
+
+.popup.visible{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.container{
+    transition: all 0.5s ease;
+}
+
+</style>
+
+<script>
+    // show and hide popup
+    const popup = document.getElementById('dodatki_popup');
+    let chosen_row = undefined;
+    function togglePopup(e){
+        if(chosen_row == undefined){
+            popup.classList.toggle('visible');
+            chosen_row = e;
+        }else if(chosen_row == e || e == document.getElementsByClassName('popup_exit_btn')[0]){
+            popup.classList.toggle('visible');
+            e = document.getElementsByClassName('popup_exit_btn')[0]
+        }else{
+            // zmień wartości w popupie na te odpowiadające rzędowi
+            chosen_row = e;
+        }
+    }
+</script>
