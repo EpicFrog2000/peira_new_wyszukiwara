@@ -15,149 +15,1406 @@
 </head>
 <body>
 
-<div class="container" id="wyszukiwarka">
-<table class="apartamenty_table">
-    <thead>
-        <tr>
-            <th class="center">Typ</th>
-            <th class="center">Nazwa inewstycji</th>
-            <th class="center">Numer</th>
-            <th class="center">Pokoje</th>
-            <th class="center">Piętro</th>
-            <th class="center">Pow.</th>
-            <th class="center">Cena [zł]</th>
-            <th class="center">Status</th>
-            <th class="center">Rzut</th>
-            <th class="center">Wirtualny<br/>spacer</th>
-            <th class="center">Widok 3D</th>
-            <th class="center">Wybierz</th>
-        </tr>
-    </thead>
-    <tbody style="opacity: 0; height: 20px;"></tbody>
-    <tbody id="apartament_table_body">
-        <tr style="cursor: pointer;">
-            <td class="center">
-                Typ
-            </td>
-            <td class="center">
-                Nazwa
-            </td>
-            <td class="center">
-                Numer
-            </td>
-            <td class="center">
-                Pokoje
-            </td>
-            <td class="center">
-                Piętro
-            </td>
-            <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
-                <span class="center">296 925 zł</span>
-                <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
-                <span class="center smaller_cena_text">296 925 zł</span>
-            </td>
-            <td class="center">
-                Status
-            </td>
-            <td class="center">
-                Rzut
-            </td>
-            <td class="center">
-                Wirtualny
-            </td>
-            <td class="center">
-                Widok
-            </td>
-            <td class="center">
-                Widok
-            </td>
-            <td class="center" onclick="togglePopup(this)">
-                <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
-                    Dodatki
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                            <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                        </svg>
+<div class="wyszukiwarka_lokali">
+    <div class="search-title">
+        Wyszukiwarka lokali
+    </div>
+    <div class="search_row">
+        <div class="search_group">
+            <div>
+                TYP
+            </div>
+            <div class="search_inputs">
+                <select class="search-input-select" name="type">
+                    <option value="0">Mieszkanie</option>
+                    <option value="40">Miejsce postojowe</option>
+                    <option value="50">komórka</option>
+                    <option value="65">Miejsce postojowe + komórka</option>
+                </select>
+            </div>
+        </div>
+                <div class="search_group">
+            <div>
+                NUMER BUDYNKU
+            </div>
+            <div class="search_inputs">
+                <select class="search-input-select" name="budynek">
+                    <option value="0">BUDYNEK A</option>
+                    <option value="40">BUDYNEK B</option>
+                    <option value="50">BUDYNEK C</option>
+                </select>
+            </div>
+        </div>
+                <div class="search_group">
+            <div>
+                PIĘTRO
+            </div>
+            <div class="search_inputs">
+                <select class="search-input-select" name="pietro_from">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+                <select class="search-input-select" name="pietro_to">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="search_group">
+            <div>
+                POWIERZCHNIA (m²)
+            </div>
+            <div class="search_inputs">
+                <select class="search-input-select" name="area_from">
+                    <option value="45">45</option>
+                    <option value="65">65</option>
+                    <option value="85">85</option>
+                    <option value="110">110</option>
+                </select>
+                <select class="search-input-select" name="area_to">
+                    <option value="45">45</option>
+                    <option value="65">65</option>
+                    <option value="85">85</option>
+                    <option value="110">110</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="search_group">
+            <div>
+                ZAKRES CENOWY (zł)
+            </div>
+            <div class="search_inputs">
+                <select class="search-input-select" name="cena_from">
+                    <option value="0">0 tys.</option>
+                    <option value="500">500 tys.</option>
+                    <option value="700">700 tys.</option>
+                    <option value="900">900 tys.</option>
+                    <option value="1450">1 450 tys.</option>
+                </select>
+                <select class="search-input-select" name="cena_to">
+                    <option value="500">500 tys.</option>
+                    <option value="700">700 tys.</option>
+                    <option value="900">900 tys.</option>
+                    <option value="1450">1 450 tys.</option>
+                    <option value="999999">i więcej...</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="search_group">
+            <div>
+                ILOŚĆ POKOI
+            </div>
+            <div class="search_inputs">
+                <select class="search-input-select" name="pokoje_from">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+                <select class="search-input-select" name="pokoje_to">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+        </div>
+
+    </div>
+    <div class="search_row_bottom">
+        <div class="checkbox_container">
+            <div class="mycheckbox">
+                <input type="checkbox" style="display: none;" name="Promocja">
+            </div>
+            <div class="checkbox_label">
+                <span>Promocja</span>
+                <span style="color: var(--SECONDARY);" id="value_Promocja">(0)</span>
+            </div>
+        </div>
+        <div class="checkbox_container">
+            <div class="mycheckbox">
+                <input type="checkbox" style="display: none;" name="Wolne">
+            </div>
+            <div class="checkbox_label">
+                <span>Wolne</span>
+                <span style="color: var(--SECONDARY);" id="value_Sprzedane">(0)</span>
+            </div>
+        </div>
+        <div class="checkbox_container">
+            <div class="mycheckbox">
+                <input type="checkbox" style="display: none;" name="Rezerwacja">
+            </div>
+            <div class="checkbox_label">
+                <span>Rezerwacja</span>
+                <span style="color: var(--SECONDARY);" id="value_Rezerwacja">(0)</span>
+            </div>
+        </div>
+        <div class="checkbox_container">
+            <div class="mycheckbox">
+                <input type="checkbox" style="display: none;" name="Sprzedane">
+            </div>
+            <div class="checkbox_label">
+                <span>Sprzedane</span>
+                <span style="color: var(--SECONDARY);" id="value_Sprzedane">(0)</span>
+            </div>
+        </div>
+
+        <div class="search-input-select_no_r_t" style="float: right; position: relative; margin-left: auto; width: 20rem;">
+            <div class="chosen_options_dd" id="wybrane_inwestycje">
+                Wszystkie
+            </div>
+            <div class="drop_down_options">
+                <div class="checkbox_container">
+                    <div class="mycheckbox">
+                        <input type="checkbox" style="display: none;">
+                    </div>
+                    <div class="checkbox_label">
+                        <span>Srebrzyńska Park II</span>
                     </div>
                 </div>
-            </td>
-        </tr>
-                <tr style="cursor: pointer;">
-            <td class="center">
-                Typ
-            </td>
-            <td class="center">
-                Nazwa
-            </td>
-            <td class="center">
-                Numer
-            </td>
-            <td class="center">
-                Pokoje
-            </td>
-            <td class="center">
-                Piętro
-            </td>
-            <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
-                <span class="center">296 925 zł</span>
-                <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
-                <span class="center smaller_cena_text">296 925 zł</span>
-            </td>
-            <td class="center">
-                Status
-            </td>
-            <td class="center">
-                Rzut
-            </td>
-            <td class="center">
-                Wirtualny
-            </td>
-            <td class="center">
-                Widok
-            </td>
-            <td class="center">
-                Widok
-            </td>
-            <td class="center" onclick="togglePopup(this)">
-                <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
-                    Dodatki
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                            <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                        </svg>
+                <div class="checkbox_container">
+                    <div class="mycheckbox">
+                        <input type="checkbox" style="display: none;">
+                    </div>
+                    <div class="checkbox_label">
+                        <span>Osiedle Łososiowa</span>
                     </div>
                 </div>
-            </td>
-        </tr>
-        <tbody>
-    </tbody>
-</table>
+                <div class="checkbox_container">
+                    <div class="mycheckbox">
+                        <input type="checkbox" style="display: none;">
+                    </div>
+                    <div class="checkbox_label">
+                        <span>Domy Klimatyczna</span>
+                    </div>
+                </div>
+                <div class="checkbox_container">
+                    <div class="mycheckbox">
+                        <input type="checkbox" style="display: none;">
+                    </div>
+                    <div class="checkbox_label">
+                        <span>InPark</span>
+                    </div>
+                </div>
+                <div class="checkbox_container">
+                    <div class="mycheckbox">
+                        <input type="checkbox" style="display: none;">
+                    </div>
+                    <div class="checkbox_label">
+                        <span>Srebrzyńska Park IV</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
+
 <style>
+.chosen_options_dd{
+    overflow: clip;
+}
 
-   
+.search-input-select_no_r_t:hover .drop_down_options {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.drop_down_options{
+    opacity: 0;
+    pointer-events: none;
+    background-color: var(--Biały);
+    border: 1px ;
+    position: absolute;
+    border: 1px solid #dbdbdb;
+    padding: 16px;
+    border-radius: 2px;
+    transform: translate(-17px, 16px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: calc(100% - 32px);
+    overflow: clip;
+    z-index: 9;
+}
+
+:root{
+    --Primary: #020C24;
+}
+
+.wyszukiwarka_lokali{
+    place-self: center;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    gap: 55px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+
+.search-title {
+    margin: 0;
+    font-size: 4rem;
+    font-weight: 400;
+}
+
+.search_row{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 50px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.search_group{
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 180px;
+    min-width: 180px;
+    max-width: 1fr;
+    gap: 10px;
+    box-sizing: border-box;
+    align-items: flex-start;
+}
+.search_inputs {
+    width: 100%;
+}
+
+.search_row_bottom{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 50px;
+    justify-content: flex-start;
+    width: 100%;
+    align-items: anchor-center;
+}
 
 
+.search_inputs{
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+    gap: 20px;
+}
 
+.search-input-select {
+    border: 1px solid #dbdbdb;
+    padding: 16px;
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAANCAYAAAC+ct6XAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RjBBRUQ1QTQ1QzkxMTFFMDlDNDdEQzgyNUE1RjI4MTEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RjBBRUQ1QTU1QzkxMTFFMDlDNDdEQzgyNUE1RjI4MTEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGMEFFRDVBMjVDOTExMUUwOUM0N0RDODI1QTVGMjgxMSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGMEFFRDVBMzVDOTExMUUwOUM0N0RDODI1QTVGMjgxMSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pk5mU4QAAACUSURBVHjaYmRgYJD6////MwY6AyaGAQIspCieM2cOjKkIxCFA3A0TSElJoZ3FUCANxAeAWA6IOYG4iR5BjWwpCDQCcSnNgxoIVJCDFwnwA/FHWlp8EIpHSKoGgiggLkITewrEcbQO6mVAbAbE+VD+a3IsJTc7FQAxDxD7AbEzEF+jR1DDywtoCr9DbhwzDlRZDRBgACYqHJO9bkklAAAAAElFTkSuQmCC10);
+    background-position: center right;
+    background-repeat: no-repeat;
+    background-color: #FFF;
+    border-radius: 2px;
+    transition: .2s all ease-in-out;
+}
+
+.search-input-select_no_r_t {
+    border: 1px solid #dbdbdb;
+    padding: 16px;
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    background-position: center right;
+    background-repeat: no-repeat;
+    background-color: #FFF;
+    border-radius: 2px;
+    transition: .2s all ease-in-out;
+}
+
+
+.mycheckbox {
+  border: 1px solid var(--IKONY_DEFAULT);
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  position: relative;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+  border-color: var(--SECONDARY);
+  
+}
+
+.mycheckbox::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    background-color: var(--SECONDARY);
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.2s ease;
+    box-sizing: border-box;
+    pointer-events: none;
+}
+
+.mycheckbox.mycheckbox-checked {
+  border-color: var(--SECONDARY);
+}
+
+.mycheckbox.mycheckbox-checked::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.checkbox_container{
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.checkbox_label{
+    color: var(--Primary);
+}
+
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+  document.querySelectorAll('.mycheckbox').forEach(el => {
+    el.addEventListener('click', function (e) {
+      const input = el.querySelector('input[type="checkbox"]');
+      const checked = el.classList.toggle('mycheckbox-checked');
+      if (input) input.checked = checked;
+    });
+  });
+});
+</script>
+
+
+<div class="container" id="wyszukiwarka">
+    <div class="popup" id="dodatki_popup">
+        <div class="popup_exit_btn" onclick="togglePopup(this)">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
+                    <path d="M12.6859 10.5445C13.1047 10.9633 13.1047 11.6423 12.6859 12.061C12.2671 12.4798 11.5881 12.4798 11.1693 12.061L1.05896 1.95067C0.640177 1.53189 0.640177 0.852901 1.05896 0.434116C1.47775 0.0153308 2.15673 0.0153308 2.57552 0.434116L12.6859 10.5445Z" fill="#020C25"/>
+                    <path d="M11.1693 0.434084C11.5881 0.0152988 12.2671 0.0152988 12.6859 0.434084C13.1047 0.852869 13.1047 1.53185 12.6859 1.95064L2.57552 12.061C2.15673 12.4798 1.47775 12.4798 1.05896 12.061C0.640177 11.6422 0.640177 10.9632 1.05896 10.5445L11.1693 0.434084Z" fill="#020C25"/>
+                </svg>
+            </div>
+        </div>
+        <div class="content">
+            <div class="sort_po">
+                Sortuj po cenie:
+                <select name="sort_by_price" id="sort_by_price">
+                    <option value="chapest">Od Najtaszej</option>
+                    <option value="expensiviestxd">Od Najdroższej</option>
+                </select>
+            </div>
+            <div class="wybory">
+                <div class="options_wybory">
+                    <div class="options_title">KOMÓRKA</div>
+                    <ul class="popup_ul">
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">125</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">1</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">153</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="btn_zwin">
+                        <span>ROZWIŃ</span>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <a class="zobacz_na_planie" href="#">
+                        ZOBACZ NA PLANIE
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="27" height="28" viewBox="0 0 27 28" fill="none">
+                                <path d="M26.358 3.83447H7.07118C6.90122 3.83447 6.73828 3.90212 6.61701 4.02253L0.188148 10.4515C0.0685897 10.5719 0 10.7351 0 10.9057V23.7626C0 24.1177 0.287717 24.4057 0.642128 24.4057H26.3579C26.7123 24.4057 27 24.1177 27 23.7626V4.47755C27.0001 4.12247 26.7124 3.83447 26.358 3.83447ZM25.7139 23.1204H1.28615V11.5486H7.07118C7.42739 11.5486 7.71511 11.2606 7.71511 10.9056V5.11977H25.7139V23.1204Z" fill="#979BA6"/>
+                                <path d="M5.78495 13.4767C5.43044 13.4767 5.14282 13.7647 5.14282 14.1198V18.9417C5.14282 19.2968 5.43044 19.584 5.78495 19.584H21.8572C22.2117 19.584 22.4994 19.2968 22.4994 18.9417V9.29835C22.4994 8.94328 22.2117 8.65613 21.8572 8.65613H15.4283C15.0738 8.65613 14.7862 8.94328 14.7862 9.29835V13.4766H5.78495V13.4767ZM18.0006 14.7629V18.2988H10.9279V14.7629H18.0006ZM6.42888 14.7629H9.64341V18.2988H6.42888V14.7629ZM19.285 18.2987V14.7628H21.2151V18.2987H19.285ZM21.2152 9.94152V13.4767H16.0724V9.94152H21.2152Z" fill="#979BA6"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="options_wybory">
+                    <div class="options_title">KOMÓRKA</div>
+                    <ul class="popup_ul">
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="btn_zwin">
+                        <span>ROZWIŃ</span>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <a class="zobacz_na_planie" href="#">
+                        ZOBACZ NA PLANIE
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="27" height="28" viewBox="0 0 27 28" fill="none">
+                                <path d="M26.358 3.83447H7.07118C6.90122 3.83447 6.73828 3.90212 6.61701 4.02253L0.188148 10.4515C0.0685897 10.5719 0 10.7351 0 10.9057V23.7626C0 24.1177 0.287717 24.4057 0.642128 24.4057H26.3579C26.7123 24.4057 27 24.1177 27 23.7626V4.47755C27.0001 4.12247 26.7124 3.83447 26.358 3.83447ZM25.7139 23.1204H1.28615V11.5486H7.07118C7.42739 11.5486 7.71511 11.2606 7.71511 10.9056V5.11977H25.7139V23.1204Z" fill="#979BA6"/>
+                                <path d="M5.78495 13.4767C5.43044 13.4767 5.14282 13.7647 5.14282 14.1198V18.9417C5.14282 19.2968 5.43044 19.584 5.78495 19.584H21.8572C22.2117 19.584 22.4994 19.2968 22.4994 18.9417V9.29835C22.4994 8.94328 22.2117 8.65613 21.8572 8.65613H15.4283C15.0738 8.65613 14.7862 8.94328 14.7862 9.29835V13.4766H5.78495V13.4767ZM18.0006 14.7629V18.2988H10.9279V14.7629H18.0006ZM6.42888 14.7629H9.64341V18.2988H6.42888V14.7629ZM19.285 18.2987V14.7628H21.2151V18.2987H19.285ZM21.2152 9.94152V13.4767H16.0724V9.94152H21.2152Z" fill="#979BA6"/>
+                            </svg>
+                        </div>
+                    </a>
+                </div>            <div class="options_wybory">
+                    <div class="options_title">KOMÓRKA</div>
+                    <ul class="popup_ul">
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                            </div>
+                            <div class="nazwa_opcja">
+                                komorka nr 1
+                            </div>
+                            <div class="wartosc_opcja">
+                                <span class="cena_opcji">123</span><span> zl/mis.</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="btn_zwin">
+                        <span>ROZWIŃ</span>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <a class="zobacz_na_planie" href="#">
+                        ZOBACZ NA PLANIE
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="27" height="28" viewBox="0 0 27 28" fill="none">
+                                <path d="M26.358 3.83447H7.07118C6.90122 3.83447 6.73828 3.90212 6.61701 4.02253L0.188148 10.4515C0.0685897 10.5719 0 10.7351 0 10.9057V23.7626C0 24.1177 0.287717 24.4057 0.642128 24.4057H26.3579C26.7123 24.4057 27 24.1177 27 23.7626V4.47755C27.0001 4.12247 26.7124 3.83447 26.358 3.83447ZM25.7139 23.1204H1.28615V11.5486H7.07118C7.42739 11.5486 7.71511 11.2606 7.71511 10.9056V5.11977H25.7139V23.1204Z" fill="#979BA6"/>
+                                <path d="M5.78495 13.4767C5.43044 13.4767 5.14282 13.7647 5.14282 14.1198V18.9417C5.14282 19.2968 5.43044 19.584 5.78495 19.584H21.8572C22.2117 19.584 22.4994 19.2968 22.4994 18.9417V9.29835C22.4994 8.94328 22.2117 8.65613 21.8572 8.65613H15.4283C15.0738 8.65613 14.7862 8.94328 14.7862 9.29835V13.4766H5.78495V13.4767ZM18.0006 14.7629V18.2988H10.9279V14.7629H18.0006ZM6.42888 14.7629H9.64341V18.2988H6.42888V14.7629ZM19.285 18.2987V14.7628H21.2151V18.2987H19.285ZM21.2152 9.94152V13.4767H16.0724V9.94152H21.2152Z" fill="#979BA6"/>
+                            </svg>
+                        </div>
+                    </a>
+
+                    <a href="#" class="zobacz_lokal_btn">
+                        ZOBACZ LOKAL
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="popup_footer">
+            <div class="laczna_cena">
+                <span class="text_cena">
+                    ŁĄCZNA CENA MIESZKANIA
+                </span>
+                <span class="cena">
+                    12465 zł
+                </span>
+            </div>
+            <div class="dodaj_do_koszyka_btn">
+                DODAJ DO KOSZYKA
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="23" viewBox="0 0 25 23" fill="none">
+                        <path d="M18.1861 17.5063C17.7377 17.5068 17.2989 17.634 16.9219 17.8726C16.5449 18.1112 16.2456 18.4513 16.0594 18.8523H12.5804C12.3946 18.4509 12.0951 18.1105 11.7179 17.8718C11.3406 17.633 10.9014 17.5061 10.4528 17.5061C10.0041 17.5061 9.56495 17.633 9.18768 17.8718C8.81041 18.1105 8.51097 18.4509 8.32512 18.8523H7.11114V15.0294H17.0771C19.7181 15.0294 27.0765 3.66692 24.4375 3.66692H7.11114V0.119995H1.06579C0.783122 0.119995 0.512039 0.230398 0.312165 0.426911C0.112291 0.623425 0 0.88995 0 1.16786C0 1.44577 0.112291 1.7123 0.312165 1.90881C0.512039 2.10533 0.783122 2.21573 1.06579 2.21573H4.97759V20.95H8.42325C8.6251 21.3048 8.91953 21.6002 9.27618 21.8058C9.63284 22.0115 10.0388 22.1199 10.4523 22.1199C10.8657 22.1199 11.2717 22.0115 11.6284 21.8058C11.985 21.6002 12.2794 21.3048 12.4813 20.95H16.1576C16.4031 21.3803 16.7833 21.7211 17.2416 21.9219C17.7 22.1226 18.212 22.1724 18.7016 22.064C19.1911 21.9556 19.6319 21.6947 19.9585 21.3201C20.285 20.9455 20.4798 20.4773 20.514 19.9851C20.514 19.9542 20.5326 19.9282 20.5326 19.8963C20.5312 19.8866 20.5292 19.8769 20.5267 19.8674C20.5267 19.8471 20.5326 19.8279 20.5326 19.8076C20.5313 19.1967 20.2835 18.6112 19.8435 18.1797C19.4036 17.7482 18.8075 17.5061 18.1861 17.5063ZM21.1146 5.82152C22.7545 5.82152 18.1861 12.8758 16.5452 12.8758H7.11015V5.82152H21.1146ZM10.4528 20.9143C10.3056 20.9143 10.1599 20.8858 10.024 20.8304C9.8881 20.775 9.76462 20.6938 9.66063 20.5915C9.55664 20.4892 9.47416 20.3677 9.41795 20.234C9.36173 20.1003 9.33287 19.9571 9.333 19.8124C9.34395 19.5239 9.46547 19.2502 9.67316 19.0462C9.88086 18.8422 10.1594 18.723 10.4528 18.7124C10.6329 18.7165 10.8092 18.7642 10.966 18.8514C11.1475 18.9419 11.3 19.0799 11.4068 19.2501C11.5136 19.4203 11.5706 19.6162 11.5715 19.8163C11.5705 20.1074 11.4522 20.3863 11.2425 20.5919C11.0329 20.7975 10.7489 20.914 10.4528 20.9143ZM18.1871 20.9143C18.04 20.9143 17.8943 20.8858 17.7583 20.8304C17.6224 20.775 17.4989 20.6938 17.3949 20.5915C17.291 20.4892 17.2085 20.3677 17.1523 20.234C17.0961 20.1003 17.0672 19.9571 17.0673 19.8124C17.0783 19.5239 17.1998 19.2502 17.4075 19.0462C17.6152 18.8422 17.8937 18.723 18.1871 18.7124C18.3672 18.7165 18.5435 18.7642 18.7003 18.8514C18.8817 18.942 19.0342 19.08 19.141 19.2502C19.2478 19.4204 19.3049 19.6162 19.3059 19.8163C19.3048 20.1074 19.1865 20.3863 18.9769 20.5919C18.7672 20.7975 18.4832 20.914 18.1871 20.9143Z" fill="#020C24"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wyniki">
+        <div class="search-title">
+            Wyniki wyszukiwarki
+        </div>
+        
+        <table class="apartamenty_table" id="apartamenty_table">
+            <thead>
+                <tr>
+                    <th class="center" onclick="sort_col_by(this)" id="sort_type">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                            <span>Typ</span>
+                            <span>-</span>
+                        </div>
+                    </th>
+                    <th class="center" onclick="sort_col_by(this)" id="sort_name">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                            <span>Nazwa inewstycji</span>
+                            <span>-</span>
+                        </div>
+                    </th>
+                    <th class="center" onclick="sort_col_by(this)" id="sort_number">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                            <span>Numer</span>
+                            <span>-</span>
+                        </div>
+                    </th>
+                    <th class="center" onclick="sort_col_by(this)" id="sort_pokoje">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                            <span>Pokoje</span>
+                            <span>-</span>
+                        </div>
+                    </th>
+                    <th class="center" onclick="sort_col_by(this)" id="sort_pietro">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                            <span>Piętro</span>
+                            <span>-</span>
+                        </div>
+                    </th>
+                    <th class="center" onclick="sort_col_by(this)" id="sort_pow">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                            <span>Pow.</span>
+                            <span>-</span>
+                        </div>
+                    </th>
+                    <th class="center" onclick="sort_col_by(this)" id="sort_cena">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                            <span>Cena [zł]</span>
+                            <span>-</span>
+                        </div>
+                    </th>
+                    <th class="center" onclick="sort_col_by(this)" id="sort_status">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                            <span>Status</span>
+                            <span>-</span>
+                        </div>
+                    </th>
+                    <th class="center" onclick="sort_col_by(this)" id="sort_rzut">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                            <span>Rzut</span>
+                            <span>-</span>
+                        </div>
+                    </th>
+                    <th class="center" onclick="sort_col_by(this)" id="sort_spacer">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                            <span>Wirtualny<br/>spacer</span>
+                            <span>-</span>
+                        </div>
+                    </th>
+                    <th class="center" onclick="sort_col_by(this)" id="sort_widok">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                            <span>Widok 3D</span>
+                            <span>-</span>
+                        </div>                        
+                    </th>
+                    <th class="center" onclick="sort_col_by(this)" id="sort_dodatki">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                            <span>Wybierz</span>
+                            <span>-</span>
+                        </div>  
+                    </th>
+                </tr>
+            </thead>
+            <tbody style="opacity: 0; height: 20px;"></tbody>
+            <tbody id="apartament_table_body">
+                <tr>
+                    <td class="center">
+                        Type
+                    </td>
+                    <td class="center">
+                        Nazwa
+                    </td>
+                    <td class="center">
+                        Numer
+                    </td>
+                    <td class="center">
+                        Pokoje
+                    </td>
+                    <td class="center">
+                        Piętro
+                    </td>
+                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
+                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
+                        <span class="center">296 925 zł</span>
+                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                        <span class="center smaller_cena_text">296 925 zł</span>
+                    </td>
+                    <td class="center">
+                        Status
+                    </td>
+                    <td class="center">
+                        Rzut
+                    </td>
+                    <td class="center">
+                        Wirtualny
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center hover-btn-dodatki hover-btn-dodatki" onclick="togglePopup(this)">
+                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
+                            Dodatki
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                        <tr>
+                    <td class="center">
+                        Typz
+                    </td>
+                    <td class="center">
+                        Nazwa
+                    </td>
+                    <td class="center">
+                        Numer
+                    </td>
+                    <td class="center">
+                        Pokoje
+                    </td>
+                    <td class="center">
+                        Piętro
+                    </td>
+                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
+                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
+                        <span class="center">296 925 zł</span>
+                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                        <span class="center smaller_cena_text">296 925 zł</span>
+                    </td>
+                    <td class="center">
+                        Status
+                    </td>
+                    <td class="center">
+                        Rzut
+                    </td>
+                    <td class="center">
+                        Wirtualny
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center hover-btn-dodatki" onclick="togglePopup(this)">
+                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
+                            Dodatki
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                        <tr>
+                    <td class="center">
+                        Typ
+                    </td>
+                    <td class="center">
+                        Nazwa
+                    </td>
+                    <td class="center">
+                        Numer
+                    </td>
+                    <td class="center">
+                        Pokoje
+                    </td>
+                    <td class="center">
+                        Piętro
+                    </td>
+                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
+                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
+                        <span class="center">296 925 zł</span>
+                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                        <span class="center smaller_cena_text">296 925 zł</span>
+                    </td>
+                    <td class="center">
+                        Status
+                    </td>
+                    <td class="center">
+                        Rzut
+                    </td>
+                    <td class="center">
+                        Wirtualny
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center hover-btn-dodatki" onclick="togglePopup(this)">
+                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
+                            Dodatki
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                        <tr>
+                    <td class="center">
+                        Typ
+                    </td>
+                    <td class="center">
+                        Nazwa
+                    </td>
+                    <td class="center">
+                        Numer
+                    </td>
+                    <td class="center">
+                        Pokoje
+                    </td>
+                    <td class="center">
+                        Piętro
+                    </td>
+                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
+                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
+                        <span class="center">296 925 zł</span>
+                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                        <span class="center smaller_cena_text">296 925 zł</span>
+                    </td>
+                    <td class="center">
+                        Status
+                    </td>
+                    <td class="center">
+                        Rzut
+                    </td>
+                    <td class="center">
+                        Wirtualny
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center hover-btn-dodatki" onclick="togglePopup(this)">
+                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
+                            Dodatki
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                        <tr>
+                    <td class="center">
+                        Typ
+                    </td>
+                    <td class="center">
+                        Nazwa
+                    </td>
+                    <td class="center">
+                        Numer
+                    </td>
+                    <td class="center">
+                        Pokoje
+                    </td>
+                    <td class="center">
+                        Piętro
+                    </td>
+                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
+                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
+                        <span class="center">296 925 zł</span>
+                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                        <span class="center smaller_cena_text">296 925 zł</span>
+                    </td>
+                    <td class="center">
+                        Status
+                    </td>
+                    <td class="center">
+                        Rzut
+                    </td>
+                    <td class="center">
+                        Wirtualny
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center hover-btn-dodatki" onclick="togglePopup(this)">
+                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
+                            Dodatki
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                        <tr>
+                    <td class="center">
+                        Typ
+                    </td>
+                    <td class="center">
+                        Nazwa
+                    </td>
+                    <td class="center">
+                        Numer
+                    </td>
+                    <td class="center">
+                        Pokoje
+                    </td>
+                    <td class="center">
+                        Piętro
+                    </td>
+                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
+                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
+                        <span class="center">296 925 zł</span>
+                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                        <span class="center smaller_cena_text">296 925 zł</span>
+                    </td>
+                    <td class="center">
+                        Status
+                    </td>
+                    <td class="center">
+                        Rzut
+                    </td>
+                    <td class="center">
+                        Wirtualny
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center hover-btn-dodatki" onclick="togglePopup(this)">
+                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
+                            Dodatki
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                        <tr>
+                    <td class="center">
+                        Typ
+                    </td>
+                    <td class="center">
+                        Nazwa
+                    </td>
+                    <td class="center">
+                        Numer
+                    </td>
+                    <td class="center">
+                        Pokoje
+                    </td>
+                    <td class="center">
+                        Piętro
+                    </td>
+                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
+                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
+                        <span class="center">296 925 zł</span>
+                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                        <span class="center smaller_cena_text">296 925 zł</span>
+                    </td>
+                    <td class="center">
+                        Status
+                    </td>
+                    <td class="center">
+                        Rzut
+                    </td>
+                    <td class="center">
+                        Wirtualny
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center hover-btn-dodatki" onclick="togglePopup(this)">
+                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
+                            Dodatki
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                        <tr>
+                    <td class="center">
+                        Typ
+                    </td>
+                    <td class="center">
+                        Nazwa
+                    </td>
+                    <td class="center">
+                        Numer
+                    </td>
+                    <td class="center">
+                        Pokoje
+                    </td>
+                    <td class="center">
+                        Piętro
+                    </td>
+                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
+                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
+                        <span class="center">296 925 zł</span>
+                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                        <span class="center smaller_cena_text">296 925 zł</span>
+                    </td>
+                    <td class="center">
+                        Status
+                    </td>
+                    <td class="center">
+                        Rzut
+                    </td>
+                    <td class="center">
+                        Wirtualny
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center hover-btn-dodatki hover-btn-dodatki" onclick="togglePopup(this)">
+                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
+                            Dodatki
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="center">
+                        Typ
+                    </td>
+                    <td class="center">
+                        Nazwa
+                    </td>
+                    <td class="center">
+                        Numer
+                    </td>
+                    <td class="center">
+                        Pokoje
+                    </td>
+                    <td class="center">
+                        Piętro
+                    </td>
+                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
+                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
+                        <span class="center">296 925 zł</span>
+                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                        <span class="center smaller_cena_text">296 925 zł</span>
+                    </td>
+                    <td class="center">
+                        Status
+                    </td>
+                    <td class="center">
+                        Rzut
+                    </td>
+                    <td class="center">
+                        Wirtualny
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center">
+                        Widok
+                    </td>
+                    <td class="center hover-btn-dodatki hover-btn-dodatki" onclick="togglePopup(this)">
+                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
+                            Dodatki
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    body{
+        height: 500vh;
+    }
+    thead th{
+        cursor: pointer;
+    }
     .popup{
         opacity: 0;
         pointer-events: auto;
+        grid-row-start: 1;
+        grid-row-end: 1;
+        grid-column-start: 1;
+        grid-column-end: 1;
+        position: relative;
+        z-index: 3;
     }
+
     :root{
         --Background: #F9F9F9; 
     }
     
     .container{
+        align-items: self-start;
         width: 100%;
         background-color: var(--Background);
+        display: grid;
+    }
+
+    .wyniki{
+        grid-row-start: 1;
+        grid-row-end: 1;
+        grid-column-start: 1;
+        grid-column-end: 1;
+        justify-self: center;
+        position: relative;
+        z-index: 2;
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        gap: 55px;
+        padding-top: 60px;
+        padding-bottom: 60px;
     }
 
     .apartamenty_table{
-        width: 80%;
+        width: 100%;
         border-spacing: 0 5px;
-        justify-self: center;
+        transition: all 0.5s ease;
     }
 
     .center{
@@ -180,6 +1437,10 @@
         font-weight: 400;
         line-height: normal;
     }
+    tr{
+        min-height: 80px;
+        max-height: 80px;
+    }
     td{
         padding: 10px 10px 10px 10px;
         align-items: center;
@@ -189,6 +1450,7 @@
         font-weight: 400;
         line-height: normal;
         min-height: 80px;
+        max-height: 80px;
         justify-items: center;
         align-items: center;
         place-content: center;
@@ -283,454 +1545,6 @@
         }
     }
 
-    /* potem ukryć zmienić na coś innego te wyszukiware */
-</style>
-
-
-
-
-<div class="popup" id="dodatki_popup">
-    <div class="popup_exit_btn" onclick="togglePopup(this)">
-        <div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
-                <path d="M12.6859 10.5445C13.1047 10.9633 13.1047 11.6423 12.6859 12.061C12.2671 12.4798 11.5881 12.4798 11.1693 12.061L1.05896 1.95067C0.640177 1.53189 0.640177 0.852901 1.05896 0.434116C1.47775 0.0153308 2.15673 0.0153308 2.57552 0.434116L12.6859 10.5445Z" fill="#020C25"/>
-                <path d="M11.1693 0.434084C11.5881 0.0152988 12.2671 0.0152988 12.6859 0.434084C13.1047 0.852869 13.1047 1.53185 12.6859 1.95064L2.57552 12.061C2.15673 12.4798 1.47775 12.4798 1.05896 12.061C0.640177 11.6422 0.640177 10.9632 1.05896 10.5445L11.1693 0.434084Z" fill="#020C25"/>
-            </svg>
-        </div>
-    </div>
-    
-    <div class="content">
-        <div class="sort_po">
-            Sortuj po cenie:
-            <select name="sort_by_price" id="sort_by_price">
-                <option value="chapest">Od Najtaszej</option>
-                <option value="expensiviestxd">Od Najdroższej</option>
-            </select>
-        </div>
-        <div class="wybory">
-            <div class="options_wybory">
-                <div class="options_title">KOMÓRKA</div>
-                <ul class="popup_ul">
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">125</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">1</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">153</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                </ul>
-                <div class="btn_zwin">
-                    <span>ROZWIŃ</span>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                            <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                        </svg>
-                    </div>
-                </div>
-                <a class="zobacz_na_planie" href="#">
-                    ZOBACZ NA PLANIE
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="28" viewBox="0 0 27 28" fill="none">
-                            <path d="M26.358 3.83447H7.07118C6.90122 3.83447 6.73828 3.90212 6.61701 4.02253L0.188148 10.4515C0.0685897 10.5719 0 10.7351 0 10.9057V23.7626C0 24.1177 0.287717 24.4057 0.642128 24.4057H26.3579C26.7123 24.4057 27 24.1177 27 23.7626V4.47755C27.0001 4.12247 26.7124 3.83447 26.358 3.83447ZM25.7139 23.1204H1.28615V11.5486H7.07118C7.42739 11.5486 7.71511 11.2606 7.71511 10.9056V5.11977H25.7139V23.1204Z" fill="#979BA6"/>
-                            <path d="M5.78495 13.4767C5.43044 13.4767 5.14282 13.7647 5.14282 14.1198V18.9417C5.14282 19.2968 5.43044 19.584 5.78495 19.584H21.8572C22.2117 19.584 22.4994 19.2968 22.4994 18.9417V9.29835C22.4994 8.94328 22.2117 8.65613 21.8572 8.65613H15.4283C15.0738 8.65613 14.7862 8.94328 14.7862 9.29835V13.4766H5.78495V13.4767ZM18.0006 14.7629V18.2988H10.9279V14.7629H18.0006ZM6.42888 14.7629H9.64341V18.2988H6.42888V14.7629ZM19.285 18.2987V14.7628H21.2151V18.2987H19.285ZM21.2152 9.94152V13.4767H16.0724V9.94152H21.2152Z" fill="#979BA6"/>
-                        </svg>
-                    </div>
-                </a>
-            </div>
-            
-            <div class="options_wybory">
-                <div class="options_title">KOMÓRKA</div>
-                <ul class="popup_ul">
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                </ul>
-                <div class="btn_zwin">
-                    <span>ROZWIŃ</span>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                            <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                        </svg>
-                    </div>
-                </div>
-                <a class="zobacz_na_planie" href="#">
-                    ZOBACZ NA PLANIE
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="28" viewBox="0 0 27 28" fill="none">
-                            <path d="M26.358 3.83447H7.07118C6.90122 3.83447 6.73828 3.90212 6.61701 4.02253L0.188148 10.4515C0.0685897 10.5719 0 10.7351 0 10.9057V23.7626C0 24.1177 0.287717 24.4057 0.642128 24.4057H26.3579C26.7123 24.4057 27 24.1177 27 23.7626V4.47755C27.0001 4.12247 26.7124 3.83447 26.358 3.83447ZM25.7139 23.1204H1.28615V11.5486H7.07118C7.42739 11.5486 7.71511 11.2606 7.71511 10.9056V5.11977H25.7139V23.1204Z" fill="#979BA6"/>
-                            <path d="M5.78495 13.4767C5.43044 13.4767 5.14282 13.7647 5.14282 14.1198V18.9417C5.14282 19.2968 5.43044 19.584 5.78495 19.584H21.8572C22.2117 19.584 22.4994 19.2968 22.4994 18.9417V9.29835C22.4994 8.94328 22.2117 8.65613 21.8572 8.65613H15.4283C15.0738 8.65613 14.7862 8.94328 14.7862 9.29835V13.4766H5.78495V13.4767ZM18.0006 14.7629V18.2988H10.9279V14.7629H18.0006ZM6.42888 14.7629H9.64341V18.2988H6.42888V14.7629ZM19.285 18.2987V14.7628H21.2151V18.2987H19.285ZM21.2152 9.94152V13.4767H16.0724V9.94152H21.2152Z" fill="#979BA6"/>
-                        </svg>
-                    </div>
-                </a>
-            </div>            <div class="options_wybory">
-                <div class="options_title">KOMÓRKA</div>
-                <ul class="popup_ul">
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div>
-                            <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
-                        </div>
-                        <div class="nazwa_opcja">
-                            komorka nr 1
-                        </div>
-                        <div class="wartosc_opcja">
-                            <span class="cena_opcji">123</span><span> zl/mis.</span>
-                        </div>
-                    </li>
-                </ul>
-                <div class="btn_zwin">
-                    <span>ROZWIŃ</span>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                            <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                        </svg>
-                    </div>
-                </div>
-                <a class="zobacz_na_planie" href="#">
-                    ZOBACZ NA PLANIE
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="27" height="28" viewBox="0 0 27 28" fill="none">
-                            <path d="M26.358 3.83447H7.07118C6.90122 3.83447 6.73828 3.90212 6.61701 4.02253L0.188148 10.4515C0.0685897 10.5719 0 10.7351 0 10.9057V23.7626C0 24.1177 0.287717 24.4057 0.642128 24.4057H26.3579C26.7123 24.4057 27 24.1177 27 23.7626V4.47755C27.0001 4.12247 26.7124 3.83447 26.358 3.83447ZM25.7139 23.1204H1.28615V11.5486H7.07118C7.42739 11.5486 7.71511 11.2606 7.71511 10.9056V5.11977H25.7139V23.1204Z" fill="#979BA6"/>
-                            <path d="M5.78495 13.4767C5.43044 13.4767 5.14282 13.7647 5.14282 14.1198V18.9417C5.14282 19.2968 5.43044 19.584 5.78495 19.584H21.8572C22.2117 19.584 22.4994 19.2968 22.4994 18.9417V9.29835C22.4994 8.94328 22.2117 8.65613 21.8572 8.65613H15.4283C15.0738 8.65613 14.7862 8.94328 14.7862 9.29835V13.4766H5.78495V13.4767ZM18.0006 14.7629V18.2988H10.9279V14.7629H18.0006ZM6.42888 14.7629H9.64341V18.2988H6.42888V14.7629ZM19.285 18.2987V14.7628H21.2151V18.2987H19.285ZM21.2152 9.94152V13.4767H16.0724V9.94152H21.2152Z" fill="#979BA6"/>
-                        </svg>
-                    </div>
-                </a>
-
-                <a href="#" class="zobacz_lokal_btn">
-                    ZOBACZ LOKAL
-                </a>
-            </div>
-        </div>
-    </div>
-    
-    <div class="popup_footer">
-        <div class="laczna_cena">
-            <span class="text_cena">
-                ŁĄCZNA CENA MIESZKANIA
-            </span>
-            <span class="cena">
-                12465 zł
-            </span>
-        </div>
-        <div class="dodaj_do_koszyka_btn">
-            DODAJ DO KOSZYKA
-            <div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="23" viewBox="0 0 25 23" fill="none">
-                    <path d="M18.1861 17.5063C17.7377 17.5068 17.2989 17.634 16.9219 17.8726C16.5449 18.1112 16.2456 18.4513 16.0594 18.8523H12.5804C12.3946 18.4509 12.0951 18.1105 11.7179 17.8718C11.3406 17.633 10.9014 17.5061 10.4528 17.5061C10.0041 17.5061 9.56495 17.633 9.18768 17.8718C8.81041 18.1105 8.51097 18.4509 8.32512 18.8523H7.11114V15.0294H17.0771C19.7181 15.0294 27.0765 3.66692 24.4375 3.66692H7.11114V0.119995H1.06579C0.783122 0.119995 0.512039 0.230398 0.312165 0.426911C0.112291 0.623425 0 0.88995 0 1.16786C0 1.44577 0.112291 1.7123 0.312165 1.90881C0.512039 2.10533 0.783122 2.21573 1.06579 2.21573H4.97759V20.95H8.42325C8.6251 21.3048 8.91953 21.6002 9.27618 21.8058C9.63284 22.0115 10.0388 22.1199 10.4523 22.1199C10.8657 22.1199 11.2717 22.0115 11.6284 21.8058C11.985 21.6002 12.2794 21.3048 12.4813 20.95H16.1576C16.4031 21.3803 16.7833 21.7211 17.2416 21.9219C17.7 22.1226 18.212 22.1724 18.7016 22.064C19.1911 21.9556 19.6319 21.6947 19.9585 21.3201C20.285 20.9455 20.4798 20.4773 20.514 19.9851C20.514 19.9542 20.5326 19.9282 20.5326 19.8963C20.5312 19.8866 20.5292 19.8769 20.5267 19.8674C20.5267 19.8471 20.5326 19.8279 20.5326 19.8076C20.5313 19.1967 20.2835 18.6112 19.8435 18.1797C19.4036 17.7482 18.8075 17.5061 18.1861 17.5063ZM21.1146 5.82152C22.7545 5.82152 18.1861 12.8758 16.5452 12.8758H7.11015V5.82152H21.1146ZM10.4528 20.9143C10.3056 20.9143 10.1599 20.8858 10.024 20.8304C9.8881 20.775 9.76462 20.6938 9.66063 20.5915C9.55664 20.4892 9.47416 20.3677 9.41795 20.234C9.36173 20.1003 9.33287 19.9571 9.333 19.8124C9.34395 19.5239 9.46547 19.2502 9.67316 19.0462C9.88086 18.8422 10.1594 18.723 10.4528 18.7124C10.6329 18.7165 10.8092 18.7642 10.966 18.8514C11.1475 18.9419 11.3 19.0799 11.4068 19.2501C11.5136 19.4203 11.5706 19.6162 11.5715 19.8163C11.5705 20.1074 11.4522 20.3863 11.2425 20.5919C11.0329 20.7975 10.7489 20.914 10.4528 20.9143ZM18.1871 20.9143C18.04 20.9143 17.8943 20.8858 17.7583 20.8304C17.6224 20.775 17.4989 20.6938 17.3949 20.5915C17.291 20.4892 17.2085 20.3677 17.1523 20.234C17.0961 20.1003 17.0672 19.9571 17.0673 19.8124C17.0783 19.5239 17.1998 19.2502 17.4075 19.0462C17.6152 18.8422 17.8937 18.723 18.1871 18.7124C18.3672 18.7165 18.5435 18.7642 18.7003 18.8514C18.8817 18.942 19.0342 19.08 19.141 19.2502C19.2478 19.4204 19.3049 19.6162 19.3059 19.8163C19.3048 20.1074 19.1865 20.3863 18.9769 20.5919C18.7672 20.7975 18.4832 20.914 18.1871 20.9143Z" fill="#020C24"/>
-                </svg>
-            </div>
-        </div>
-    </div>
-</div>
-<style>
     :root {
         --IKONY_DEFAULT: #979BA6;
         --SECONDARY: #EC964F;
@@ -750,6 +1564,20 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        opacity: 0;
+        pointer-events: none;
+        position: sticky;
+        top: 20%;
+        transition: all 0.5s ease;
+    }
+
+    .popup.visible{
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .container{
+        transition: all 0.5s ease;
     }
 
     .popup_exit_btn {
@@ -948,7 +1776,14 @@
         box-shadow: none;
     }
 
+    .hover-btn-dodatki:hover{
+        transition: all 0.5s ease;
+        cursor: pointer;
+    }
 
+    .hover-btn-dodatki:hover{
+        background-color: var(--HOVER);
+    }
 
     @media screen and (max-width: 1130px) {
         .wybory{
@@ -1099,34 +1934,104 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 </script>
 
-<style>
-
-
-.popup.visible{
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.container{
-    transition: all 0.5s ease;
-}
-
-</style>
-
 <script>
-    // show and hide popup
+    // Show and hide popup, dim table, close on X or outside
+    const table = document.getElementById('apartamenty_table');
     const popup = document.getElementById('dodatki_popup');
-    let chosen_row = undefined;
-    function togglePopup(e){
-        if(chosen_row == undefined){
-            popup.classList.toggle('visible');
-            chosen_row = e;
-        }else if(chosen_row == e || e == document.getElementsByClassName('popup_exit_btn')[0]){
-            popup.classList.toggle('visible');
-            e = document.getElementsByClassName('popup_exit_btn')[0]
-        }else{
-            // zmień wartości w popupie na te odpowiadające rzędowi
-            chosen_row = e;
+    let chosenRow = null;
+
+    function showPopup(trigger) {
+        if (!popup) return;
+        popup.classList.add('visible');
+        table.style.opacity = '0.4';
+        chosenRow = trigger;
+        document.addEventListener('mousedown', outsideClickHandler);
+    }
+
+    function hidePopup() {
+        if (!popup) return;
+        popup.classList.remove('visible');
+        table.style.opacity = '';
+        chosenRow = null;
+        document.removeEventListener('mousedown', outsideClickHandler);
+    }
+
+    function togglePopup(trigger) {
+        const exitBtn = document.querySelector('.popup_exit_btn');
+        if (!popup) return;
+
+        if (!popup.classList.contains('visible')) {
+            showPopup(trigger);
+            return;
+        }
+
+        if (trigger === exitBtn || trigger === chosenRow) {
+            hidePopup();
+            return;
+        }
+
+        chosenRow = trigger;
+    }
+
+    function outsideClickHandler(e) {
+        if (!popup.classList.contains('visible')) return;
+        if (!popup.contains(e.target)) {
+            hidePopup();
         }
     }
+</script>
+
+
+<script>
+function sort_col_by(element) {
+    const table = document.getElementById('apartament_table_body');
+    const rows = Array.from(table.querySelectorAll('tr'));
+    let colIndex = Array.from(element.parentNode.children).indexOf(element);
+    let getValue;
+
+    switch (element.id) {
+        case 'sort_type':
+        case 'sort_name':
+            getValue = row => row.children[colIndex].textContent.trim().toLowerCase();
+            break;
+        case 'sort_number':
+        case 'sort_pokoje':
+        case 'sort_pietro':
+        case 'sort_pow':
+            getValue = row => parseFloat(row.children[colIndex].textContent.replace(/[^\d.]/g, '')) || 0;
+            break;
+        case 'sort_cena':
+            getValue = row => {
+                const cenaSpan = row.children[colIndex].querySelectorAll('span.center')[1];
+                return cenaSpan ? parseFloat(cenaSpan.textContent.replace(/[^\d.]/g, '')) : 0;
+            };
+            break;
+        case 'sort_status':
+            getValue = row => row.children[colIndex].textContent.trim().toLowerCase();
+            break;
+        case 'sort_rzut':
+        case 'sort_spacer':
+        case 'sort_widok':
+        case 'sort_dodatki':
+            getValue = row => row.children[colIndex].textContent.trim().toLowerCase();
+            break;
+        default:
+            return;
+    }
+
+    element.children[0].children[1].textContent = element._asc ? '↑' : '↓';
+
+    // Toggle sort direction
+    element._asc = !element._asc;
+    rows.sort((a, b) => {
+        const va = getValue(a), vb = getValue(b);
+        if (typeof va === 'number' && typeof vb === 'number') {
+            return element._asc ? va - vb : vb - va;
+        }
+        return element._asc ? va.localeCompare(vb) : vb.localeCompare(va);
+    });
+
+    rows.forEach(row => table.appendChild(row));
+}
+
 </script>
