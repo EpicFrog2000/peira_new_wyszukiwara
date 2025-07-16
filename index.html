@@ -1,19 +1,337 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
-    <style>
-      body {
-        font-family: 'Inter', sans-serif;
+<html lang="pl">
+  <?php include APPPATH . '/views/partials/head.php';
+    $flatConfig = require_once APPPATH . 'config/flat.php';
+    require_once APPPATH . 'helpers/images.php';
+  ?>
+
+  <?php if (Auth()->isAdmin()) { ?>
+    <body class="edit_mode">
+  <?php } else { ?>
+    <body>
+  <?php } ?>
+
+    <?php include APPPATH . '/views/partials/header.php'; ?>
+
+    <div class="page_header-block" data-animation>
+      <div class="page_header">
+        <h1 class="page_header-title"><?= $settings->value('page_title') ?></h1>
+        <h2 class="page_header-subtitle"><?= $settings->value('page_subtitle') ?></h2>
+      </div>
+    </div>
+
+    <script>
+      <?php
+        $flats = getFlats();
+        $flats = flatImageLinkTransformer($flats, $flatConfig['image_url']);
+        $statuses = getFlatsStatuses($flats);
+        $flatLinks = getFlatLinks();
+      ?>
+
+      var flats = <?= floatsJSONEncode($flats) ?>;
+      var flatsLink = <?= floatsJSONLinks($settings->getValue('links_boxes')) ?>;
+    </script>
+    <div class="flat-config-image-url" style="display:none;" data-url="<?= $flatConfig['image_url']; ?>"></div>
+  <?php
+  $transformFlats = [];
+  foreach ($flats as $key => $flat) {
+
+      $flat['image_config_url'] = $flatConfig['image_url'];
+      if (isset($flat['plan_preview'])) {
+          $flat['plan_preview'] = returnPlanPreviewUrl(json_decode($flat['plan_preview']), $flat['image_config_url']);
       }
-    </style>
-</head>
-<body>
+      $transformFlats[] = $flat;
+  }
+  $flats = $transformFlats;
+  ?>
+
+
+    <!-- <div class="search-block" data-scroll="wyszukiwarka">
+      <div class="search">
+        <div class="search-title-block">
+          <h2 class="search-title">Wyszukiwarka lokali</h2>
+        </div>
+        <div class="search-form" core-variable="searchFilters">
+          <div class="search-form-element">
+            <div class="search-label">POWIERZCHNIA (m²)</div>
+            <div class="search-inputs">
+              <div class="search-input-block">
+                <select class="search-input-select" name="area_from">
+                  <option value="0">0</option>
+                  <option value="40">40</option>
+                  <option value="50">50</option>
+                  <option value="65">65</option>
+                  <option value="75">75</option>
+                </select>
+              </div>
+              <div class="search-input-block">
+                <select class="search-input-select" name="area_to">
+                  <option value="40">40</option>
+                  <option value="50">50</option>
+                  <option value="65">65</option>
+                  <option value="75">75</option>
+                  <option value="90">90</option>
+                  <option value="120" selected>120</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="search-form-element">
+            <div class="search-label">ZAKRES CENOWY (zł)</div>
+            <div class="search-inputs">
+              <div class="search-input-block">
+                <select class="search-input-select" name="price_from">
+                  <option value="0">0 tys.</option>
+                  <option value="300000">300 tys.</option>
+                  <option value="350000">350 tys.</option>
+                  <option value="400000">400 tys.</option>
+                  <option value="450000">450 tys.</option>
+                  <option value="500000">500 tys.</option>
+                  <option value="550000">550 tys.</option>
+                  <option value="600000">600 tys.</option>
+                  <option value="700000">700 tys.</option>
+                  <option value="930000">900 tys.</option>
+                  <option value="1480000">1 450 tys.</option>
+                </select>
+              </div>
+              <div class="search-input-block">
+                <select class="search-input-select" name="price_to">
+                  <option value="320000">300 tys.</option>
+                  <option value="370000">350 tys.</option>
+                  <option value="420000">400 tys.</option>
+                  <option value="470000">450 tys.</option>
+                  <option value="520000">500 tys.</option>
+                  <option value="570000">550 tys.</option>
+                  <option value="630000">600 tys.</option>
+                  <option value="730000">700 tys.</option>
+                  <option value="930000">900 tys.</option>
+                  <option value="1480000">1 450 tys.</option>
+                  <option value="100000000" selected>i więcej...</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="search-form-element">
+            <div class="search-label">ILOŚĆ POKOI</div>
+            <div class="search-inputs">
+              <div class="search-input-block">
+                <select class="search-input-select" name="rooms_from">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+              <div class="search-input-block">
+                <select class="search-input-select" name="rooms_to">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5" selected>5</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="search-form-element">
+            <div class="search-label">PIĘTRO</div>
+            <div class="search-inputs">
+              <div class="search-input-block">
+                <select class="search-input-select" name="floor_from">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                </select>
+              </div>
+              <div class="search-input-block">
+                <select class="search-input-select" name="floor_to">
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8" selected>8</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div>
+            <?php foreach ($statuses as $id => $status) { ?>
+              <div class="search-checkbox-block">
+                <label class="search-checkbox-label">
+                  <div class="search-checkbox-box">
+                    <input type="checkbox" name="status" value="<?= $id ?>" class="search-checkbox-input" <?= ($id == 1 || $id == 2) ? 'checked' : '' ?>>
+                    <div class="search-checkbox"></div>
+                  </div>
+                  <div class="search-checkbox-info"><?= $status['label'] ?> <span data-status-id="<?= $id ?>">(<?= $id == 2 ? ($statuses[1]['count'] + $status['count']) : $status['count'] ?>)</span></div>
+                </label>
+              </div>
+            <?php } ?>
+            <div class="search-select-block">
+              <div class="search-select-box">Wszystkie inwestycje</div>
+              <?php $flatLinks = getFlatLinks(); ?>
+              <div class="search-select">
+                <?php foreach ($flatLinks as $flatLink) { ?>
+                  <label class="search-select-option">
+                    <div class="search-select-input-block">
+                      <input type="checkbox" class="search-select-input" value="<?= $flatLink['id'] ?>" core-variable="flatLinkInputs[]" checked>
+                      <div class="search-select-input-box"></div>
+                    </div>
+                    <div class="search-select-label"><?= $flatLink['title'] ?></div>
+                  </label>
+                <?php } ?>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="search-table-block">
+        <div class="search-table-title-block">
+          <h3 class="search-table-title">Wyniki wyszukiwania</h3>
+          <div class="search-switcher-block" core-variable="searchSwitcherBlock">
+            <div class="search-switcher-word">LISTA</div>
+            <div class="search-switcher-box">
+              <label class="search-switcher-label">
+                <input type="checkbox" class="search-switcher-input" core-variable="searchSwitcherInput">
+                <div class="search-switcher"></div>
+              </label>
+            </div>
+            <div class="search-switcher-word">RZUTY</div>
+          </div>
+        </div>
+        <div class="search-table" core-variable="searchTable">
+          <div class="search-table-header">
+            <div class="search-table-header-row" core-variable="searchTableHeader">
+              <div class="search-table-header-col search-col-sort search-col-name" core-click="searchFilter" data-col="id_link"><span>Nazwa Inwestycji</span></div>
+              <div class="search-table-header-col search-col-sort search-col-number" core-click="searchFilter" data-col="local_number"><span>Numer</span></div>
+              <div class="search-table-header-col search-col-sort search-col-number" core-click="searchFilter" data-col="rooms"><span>Pokoje</span></div>
+              <div class="search-table-header-col search-col-sort search-col-number" core-click="searchFilter" data-col="floor"><span>Piętro</span></div>
+              <div class="search-table-header-col search-col-sort search-col-number" core-click="searchFilter" data-col="area"><span>Pow.</span></div>
+              <div class="search-table-header-col search-col-sort search-col-number" core-click="searchFilter" data-col="price"><span>Cena [zł]</span></div>
+              <div class="search-table-header-col search-col-sort search-col-status" core-click="searchFilter" data-col="status_id"><span>Status</span></div>
+              <div class="search-table-header-col search-col-rzut"><span>Rzut</span></div>
+              <div class="search-table-header-col search-col-ws"><span>Wirtualny spacer</span></div>
+              <div class="search-table-header-col search-col-wd"><span>Widok 3D</span></div>
+              <div class="search-table-header-col search-col-action"><span>Do koszyka</span></div>
+            </div>
+            <div class="search-table-body" core-variable="searchTableBody">
+              <?php $count = 0; ?>
+              <?php foreach ($flats as $key => $flat) { ?>
+                <?php $flatImages = getFlatImages($flat, $flatConfig['image_url']); ?>
+                <?php
+                  if ($flat['status_id'] != 1 && $flat['status_id'] != 2) {
+                    continue;
+                  }
+                ?>
+                <div class="search-table-row" data-id="<?= $flat['id'] ?>">
+                    <?php $settings->boxes('links_boxes', $flat['id'], function($settings, $flat) use($flatImages){ ?>
+                      <a class="search-table-link" <?php if ($flat['status_id'] == 1 || $flat['status_id'] == 2) { ?> href="<?= $settings->getValue('link') ?>"<?php } ?>>
+                        <div class="swiper sketchSwiper">
+                          <div class="swiper-wrapper">
+                            <?php foreach ($flatImages as $image): ?>
+                              <div class="swiper-slide">
+                                <div class="search-table-cast" style="background-image: url(<?php echo $image; ?>);"></div>
+                              </div>
+                            <?php endforeach; ?>
+                          </div>
+                          <div class="swiper-pagination"></div>
+                        </div>
+                      <div class="search-table-col search-col-name">
+                        <img src="<?= $flat['image_path'] ?>" class="search-table-col-logo">
+                      </div>
+                      <div class="search-table-col search-col-ln"><?= $flat['local_number'] ?? '-' ?></div>
+                      <div class="search-table-col search-col-r"><?= $flat['rooms'] ?? '-' ?></div>
+                      <div class="search-table-col search-col-f"><?= $flat['floor'] ?? '-' ?></div>
+                      <div class="search-table-col search-col-a"><?= flatAreaFormat($flat['area']) ?></div>
+                      <?php if ($flat['promotion_price']) { ?>
+                        <div class="search-table-col search-col-p prom">
+                          <div><?= flatPriceFormat($flat['price'], $flat['ask_for_price']) ?></div>
+                          <div><?= flatPriceFormat($flat['promotion_price'], $flat['ask_for_price']) ?></div>
+                        </div>
+                      <?php } else { ?>
+                        <div class="search-table-col search-col-p"><?= flatPriceFormat($flat['price'], $flat['ask_for_price']) ?></div>
+                      <?php } ?>
+                      <div class="search-table-col search-col-status">
+                        <span class="search-col-status-label status-<?= $flat['status_id'] ?>"><?= getStatusLabel($flat['status_id']) ?></span>
+                      </div>
+                      <div class="search-table-col search-col-rzut">
+                        <div class="search-col-rzut-link" data-url="<?= $flat['card_link'] ?>"></div>
+                      </div>
+                      <div class="search-table-col search-col-ws">
+                        <div class="search-col-ws-link <?= $flat['is_3destate'] ? '' : 'disabled' ?>"></div>
+                      </div>
+                      <div class="search-table-col search-col-wd">
+                        <div class="search-col-wd-link" data-anchor="<?= $flat['is_apartments3d'] ? 'apartments3d' : 'aranzacja' ?>"></div>
+                      </div>
+                      <div class="search-table-col search-col-action">
+                        <div class="search-table-cart"></div>
+                      </div>
+                    </a>
+                  <?php }, $flat); ?>
+                </div>
+                <?php
+                  if (($count++) == 9) {
+                    break;
+                  }
+                ?>
+              <?php } ?>
+              <div class="search-table-row" style="display: none" core-element="searchTableRow">
+                <a href="#" class="search-table-link">
+                  <div class="swiper sketchSwiper">
+                    <div class="swiper-wrapper" data-element="swiper"></div>
+                    <div class="swiper-pagination"></div>
+                  </div>
+                  <div class="search-table-col search-col-name">
+                    <img src="#" class="search-table-col-logo" data-element="image_path">
+                  </div>
+                  <div class="search-table-col search-col-ln" data-element="local_number"></div>
+                  <div class="search-table-col search-col-r" data-element="rooms"></div>
+                  <div class="search-table-col search-col-f" data-element="floor"></div>
+                  <div class="search-table-col search-col-a" data-element="area"></div>
+                  <div class="search-table-col search-col-p" data-element="price"></div>
+                  <div class="search-table-col search-col-status">
+                    <span class="search-col-status-label" data-element="status"></span>
+                  </div>
+                  <div class="search-table-col search-col-rzut">
+                    <div class="search-col-rzut-link" data-element="rzut"></div>
+                  </div>
+                  <div class="search-table-col search-col-ws">
+                    <div class="search-col-ws-link" data-element="ws"></div>
+                  </div>
+                  <div class="search-table-col search-col-wd">
+                    <div class="search-col-wd-link" data-element="wd"></div>
+                  </div>
+                  <div class="search-table-col search-col-action">
+                    <div class="search-table-cart"></div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="search-table-empty" <?= !count($flats) ? 'style="display: block"' : '' ?> core-variable="searchTableEmpty">
+              Nie znaleziono mieszkań w danej konfiguracji
+            </div>
+          </div>
+          <div class="search-table-more-block">
+            <div class="search-table-more" core-variable="searchTableMore">Doładuj kolejne</div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+
+
+
+
 
 <div class="wyszukiwarka_lokali">
     <div class="search-title">
@@ -851,75 +1169,76 @@ document.addEventListener("DOMContentLoaded", function(event) {
         
         <table class="apartamenty_table" id="apartamenty_table">
             <thead>
+              
                 <tr>
-                    <th class="center" onclick="sort_col_by(this)" id="sort_type">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_type">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
                             <span>Typ</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" id="sort_name">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_name">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
                             <span>Nazwa inewstycji</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" id="sort_number">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_number">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
                             <span>Numer</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" id="sort_pokoje">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_pokoje">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
                             <span>Pokoje</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" id="sort_pietro">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_pietro">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
                             <span>Piętro</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" id="sort_pow">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_pow">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
                             <span>Pow.</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" id="sort_cena">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_cena">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
                             <span>Cena [zł]</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" id="sort_status">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_status">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
                             <span>Status</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" id="sort_rzut">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_rzut">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
                             <span>Rzut</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" id="sort_spacer">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_spacer">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
                             <span>Wirtualny<br/>spacer</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" id="sort_widok">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_widok">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
                             <span>Widok 3D</span>
                             <span>-</span>
                         </div>                        
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" id="sort_dodatki">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 10px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_dodatki">
+                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
                             <span>Wybierz</span>
                             <span>-</span>
                         </div>  
@@ -928,448 +1247,85 @@ document.addEventListener("DOMContentLoaded", function(event) {
             </thead>
             <tbody style="opacity: 0; height: 20px;"></tbody>
             <tbody id="apartament_table_body">
-                <tr>
-                    <td class="center">
-                        Type
-                    </td>
-                    <td class="center">
-                        Nazwa
-                    </td>
-                    <td class="center">
-                        Numer
-                    </td>
-                    <td class="center">
-                        Pokoje
-                    </td>
-                    <td class="center">
-                        Piętro
-                    </td>
-                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
-                        <span class="center">296 925 zł</span>
-                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
-                        <span class="center smaller_cena_text">296 925 zł</span>
-                    </td>
-                    <td class="center">
-                        Status
-                    </td>
-                    <td class="center">
-                        Rzut
-                    </td>
-                    <td class="center">
-                        Wirtualny
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center hover-btn-dodatki hover-btn-dodatki" onclick="togglePopup(this)">
-                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
-                            Dodatki
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                                </svg>
-                            </div>
+              <?php $count = 0; ?>
+              <?php foreach ($flats as $key => $flat) { ?>
+                <tr <?= ($count++ <= 9) ? '' : ' style="display: none;" disp="false"'  ?>>
+                      <td class="center">
+                          <?= $flat['type'] ?>
+                      </td>
+                      <td class="center">
+                        <div class="search-table-col search-col-name">
+                          <img src="<?= $flat['image_path'] ?>" class="search-table-col-logo">
                         </div>
-                    </td>
-                </tr>
-                        <tr>
-                    <td class="center">
-                        Typz
-                    </td>
-                    <td class="center">
-                        Nazwa
-                    </td>
-                    <td class="center">
-                        Numer
-                    </td>
-                    <td class="center">
-                        Pokoje
-                    </td>
-                    <td class="center">
-                        Piętro
-                    </td>
-                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
-                        <span class="center">296 925 zł</span>
-                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
-                        <span class="center smaller_cena_text">296 925 zł</span>
-                    </td>
-                    <td class="center">
-                        Status
-                    </td>
-                    <td class="center">
-                        Rzut
-                    </td>
-                    <td class="center">
-                        Wirtualny
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center hover-btn-dodatki" onclick="togglePopup(this)">
-                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
-                            Dodatki
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                        <tr>
-                    <td class="center">
-                        Typ
-                    </td>
-                    <td class="center">
-                        Nazwa
-                    </td>
-                    <td class="center">
-                        Numer
-                    </td>
-                    <td class="center">
-                        Pokoje
-                    </td>
-                    <td class="center">
-                        Piętro
-                    </td>
-                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
-                        <span class="center">296 925 zł</span>
-                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
-                        <span class="center smaller_cena_text">296 925 zł</span>
-                    </td>
-                    <td class="center">
-                        Status
-                    </td>
-                    <td class="center">
-                        Rzut
-                    </td>
-                    <td class="center">
-                        Wirtualny
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center hover-btn-dodatki" onclick="togglePopup(this)">
-                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
-                            Dodatki
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                        <tr>
-                    <td class="center">
-                        Typ
-                    </td>
-                    <td class="center">
-                        Nazwa
-                    </td>
-                    <td class="center">
-                        Numer
-                    </td>
-                    <td class="center">
-                        Pokoje
-                    </td>
-                    <td class="center">
-                        Piętro
-                    </td>
-                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
-                        <span class="center">296 925 zł</span>
-                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
-                        <span class="center smaller_cena_text">296 925 zł</span>
-                    </td>
-                    <td class="center">
-                        Status
-                    </td>
-                    <td class="center">
-                        Rzut
-                    </td>
-                    <td class="center">
-                        Wirtualny
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center hover-btn-dodatki" onclick="togglePopup(this)">
-                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
-                            Dodatki
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                        <tr>
-                    <td class="center">
-                        Typ
-                    </td>
-                    <td class="center">
-                        Nazwa
-                    </td>
-                    <td class="center">
-                        Numer
-                    </td>
-                    <td class="center">
-                        Pokoje
-                    </td>
-                    <td class="center">
-                        Piętro
-                    </td>
-                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
-                        <span class="center">296 925 zł</span>
-                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
-                        <span class="center smaller_cena_text">296 925 zł</span>
-                    </td>
-                    <td class="center">
-                        Status
-                    </td>
-                    <td class="center">
-                        Rzut
-                    </td>
-                    <td class="center">
-                        Wirtualny
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center hover-btn-dodatki" onclick="togglePopup(this)">
-                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
-                            Dodatki
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                        <tr>
-                    <td class="center">
-                        Typ
-                    </td>
-                    <td class="center">
-                        Nazwa
-                    </td>
-                    <td class="center">
-                        Numer
-                    </td>
-                    <td class="center">
-                        Pokoje
-                    </td>
-                    <td class="center">
-                        Piętro
-                    </td>
-                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
-                        <span class="center">296 925 zł</span>
-                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
-                        <span class="center smaller_cena_text">296 925 zł</span>
-                    </td>
-                    <td class="center">
-                        Status
-                    </td>
-                    <td class="center">
-                        Rzut
-                    </td>
-                    <td class="center">
-                        Wirtualny
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center hover-btn-dodatki" onclick="togglePopup(this)">
-                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
-                            Dodatki
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                        <tr>
-                    <td class="center">
-                        Typ
-                    </td>
-                    <td class="center">
-                        Nazwa
-                    </td>
-                    <td class="center">
-                        Numer
-                    </td>
-                    <td class="center">
-                        Pokoje
-                    </td>
-                    <td class="center">
-                        Piętro
-                    </td>
-                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
-                        <span class="center">296 925 zł</span>
-                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
-                        <span class="center smaller_cena_text">296 925 zł</span>
-                    </td>
-                    <td class="center">
-                        Status
-                    </td>
-                    <td class="center">
-                        Rzut
-                    </td>
-                    <td class="center">
-                        Wirtualny
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center hover-btn-dodatki" onclick="togglePopup(this)">
-                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
-                            Dodatki
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                        <tr>
-                    <td class="center">
-                        Typ
-                    </td>
-                    <td class="center">
-                        Nazwa
-                    </td>
-                    <td class="center">
-                        Numer
-                    </td>
-                    <td class="center">
-                        Pokoje
-                    </td>
-                    <td class="center">
-                        Piętro
-                    </td>
-                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
-                        <span class="center">296 925 zł</span>
-                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
-                        <span class="center smaller_cena_text">296 925 zł</span>
-                    </td>
-                    <td class="center">
-                        Status
-                    </td>
-                    <td class="center">
-                        Rzut
-                    </td>
-                    <td class="center">
-                        Wirtualny
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center hover-btn-dodatki hover-btn-dodatki" onclick="togglePopup(this)">
-                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
-                            Dodatki
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="center">
-                        Typ
-                    </td>
-                    <td class="center">
-                        Nazwa
-                    </td>
-                    <td class="center">
-                        Numer
-                    </td>
-                    <td class="center">
-                        Pokoje
-                    </td>
-                    <td class="center">
-                        Piętro
-                    </td>
-                    <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                        <span class="center smaller_cena_text crossed_cena_text">296 925 zł</span>
-                        <span class="center">296 925 zł</span>
-                        <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
-                        <span class="center smaller_cena_text">296 925 zł</span>
-                    </td>
-                    <td class="center">
-                        Status
-                    </td>
-                    <td class="center">
-                        Rzut
-                    </td>
-                    <td class="center">
-                        Wirtualny
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center">
-                        Widok
-                    </td>
-                    <td class="center hover-btn-dodatki hover-btn-dodatki" onclick="togglePopup(this)">
-                        <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
-                            Dodatki
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
-                                    <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
-                                </svg>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tbody>
+                      </td>
+                      <td class="center">
+                          <?= $flat['local_number'] ?>
+                      </td>
+                      <td class="center">
+                          <?= $flat['rooms'] ?>
+                      </td>
+                      <td class="center">
+                          <?= $flat['floor'] ?>
+                      </td>
+                      <td class="center">
+                          <?= flatAreaFormat($flat['area']) ?>
+                      </td>
+                      <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
+                          <span class="center smaller_cena_text crossed_cena_text"><?= flatPriceFormat($flat['price'], $flat['ask_for_price']) ?></span>
+                          <span class="center"><?= flatPriceFormat($flat['promotion_price'], $flat['ask_for_price']) ?></span>
+                          <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                          <span class="center smaller_cena_text"><?= flatPriceFormat($flat['price'], $flat['ask_for_price']) ?></span>
+                      </td>
+                      <td class="center">
+                          <span class="search-col-status-label status-<?= $flat['status_id'] ?>"><?= getStatusLabel($flat['status_id']) ?></span>
+                      </td>
+                      <td class="center">
+                          <div class="search-col-rzut-link" data-url="<?= $flat['card_link'] ?>"></div>
+                      </td>
+                      <td class="center">
+                          <div class="search-col-ws-link <?= $flat['is_3destate'] ? '' : 'disabled' ?>"></div>
+                      </td>
+                      <td class="center">
+                          <div class="search-col-wd-link" data-anchor="<?= $flat['is_apartments3d'] ? 'apartments3d' : 'aranzacja' ?>"></div>
+                      </td>
+                      <td class="center hover-btn-dodatki hover-btn-dodatki" onclick="togglePopup(this)">
+                          <div style="display: flex; flex-direction: row; gap: 10px; justify-items: center; align-items: center; place-items: center;">
+                              Dodatki
+                              <div>
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="11" height="10" viewBox="0 0 11 10" fill="none">
+                                      <path d="M6.00006 9.88318L0.50006 0.3569L11.5001 0.356899L6.00006 9.88318Z" fill="#020C24"/>
+                                  </svg>
+                              </div>
+                          </div>
+                      </td>
+                  </tr>
+                <?php } ?>
+              <tbody>
             </tbody>
         </table>
+        <div class="search-table-empty" <?= !count($flats) ? 'style="display: block"' : '' ?> core-variable="searchTableEmpty">
+          Nie znaleziono mieszkań w danej konfiguracji
+        </div>
+      </div>
+      <div class="search-table-more-block" style="margin-bottom: 60px;">
+        <div class="search-table-more" core-variable="searchTableMore" onclick="showMore()">Doładuj kolejne</div>
+      </div>
     </div>
 </div>
 
+<script>
+function showMore() {
+  let count = 0;
+  Array.from(document.getElementById('apartament_table_body').children)
+    .forEach(element => count < 9 && element.getAttribute("disp") === "false" && (element.removeAttribute("disp"), element.style.display = "", count++));
+}
+
+</script>
+
+
+
+
 <style>
-    body{
-        height: 500vh;
-    }
     thead th{
         cursor: pointer;
     }
@@ -1403,7 +1359,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         justify-self: center;
         position: relative;
         z-index: 2;
-        width: 80%;
         display: flex;
         flex-direction: column;
         gap: 55px;
@@ -1567,7 +1522,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         opacity: 0;
         pointer-events: none;
         position: sticky;
-        top: 20%;
+        top: 15%;
         transition: all 0.5s ease;
     }
 
@@ -1602,6 +1557,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         display: flex;
         flex-direction: column;
         gap: 16px;
+        width: auto;
     }
 
     .sort_po {
@@ -1668,7 +1624,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     .popup_ul{
         padding: 0;
-        max-height: 300px;
+        max-height: 250px;
         overflow-y: auto;
         padding-right: 20px;
         box-sizing: border-box;
@@ -1992,6 +1948,11 @@ function sort_col_by(element) {
     switch (element.id) {
         case 'sort_type':
         case 'sort_name':
+        case 'sort_status':
+        case 'sort_rzut':
+        case 'sort_spacer':
+        case 'sort_widok':
+        case 'sort_dodatki':
             getValue = row => row.children[colIndex].textContent.trim().toLowerCase();
             break;
         case 'sort_number':
@@ -2006,32 +1967,36 @@ function sort_col_by(element) {
                 return cenaSpan ? parseFloat(cenaSpan.textContent.replace(/[^\d.]/g, '')) : 0;
             };
             break;
-        case 'sort_status':
-            getValue = row => row.children[colIndex].textContent.trim().toLowerCase();
-            break;
-        case 'sort_rzut':
-        case 'sort_spacer':
-        case 'sort_widok':
-        case 'sort_dodatki':
-            getValue = row => row.children[colIndex].textContent.trim().toLowerCase();
-            break;
         default:
             return;
     }
 
     element.children[0].children[1].textContent = element._asc ? '↑' : '↓';
 
-    // Toggle sort direction
-    element._asc = !element._asc;
-    rows.sort((a, b) => {
+    const visibleRows = rows.filter(r => r.getAttribute("disp") !== "false");
+
+    visibleRows.sort((a, b) => {
         const va = getValue(a), vb = getValue(b);
-        if (typeof va === 'number' && typeof vb === 'number') {
-            return element._asc ? va - vb : vb - va;
-        }
-        return element._asc ? va.localeCompare(vb) : vb.localeCompare(va);
+        return typeof va === 'number' 
+            ? element._asc ? va - vb : vb - va 
+            : element._asc ? va.localeCompare(vb) : vb.localeCompare(va);
     });
 
-    rows.forEach(row => table.appendChild(row));
+    visibleRows.forEach(row => table.appendChild(row)); 
 }
 
 </script>
+
+
+
+
+
+
+
+
+
+    <?php include APPPATH . '/views/partials/footer.php'; ?>
+
+    <?php include 'admin.php'; ?>
+  </body>
+</html>
