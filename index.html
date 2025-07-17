@@ -26,6 +26,7 @@
         $flats = flatImageLinkTransformer($flats, $flatConfig['image_url']);
         $statuses = getFlatsStatuses($flats);
         $flatLinks = getFlatLinks();
+
       ?>
 
       var flats = <?= floatsJSONEncode($flats) ?>;
@@ -43,8 +44,12 @@
       $transformFlats[] = $flat;
   }
   $flats = $transformFlats;
+  
   ?>
-
+<script>
+    // console.log(<?php echo json_encode($flats) ?>);
+    // console.log(<?php echo json_encode($flatLinks) ?>);
+</script>
 
     <!-- <div class="search-block" data-scroll="wyszukiwarka">
       <div class="search">
@@ -333,7 +338,7 @@
 
 
 
-<div class="wyszukiwarka_lokali">
+<div class="wyszukiwarka_lokali_filter_block">
     <div class="search-title">
         Wyszukiwarka lokali
     </div>
@@ -343,46 +348,39 @@
                 TYP
             </div>
             <div class="search_inputs">
-                <select class="search-input-select" name="type">
-                    <option value="0">Mieszkanie</option>
-                    <option value="40">Miejsce postojowe</option>
-                    <option value="50">komórka</option>
-                    <option value="65">Miejsce postojowe + komórka</option>
+                <select class="search-input-select" name="type" onchange="applySearchFilter()">
+                    <?php 
+                        $uniqueTypes = array_unique(array_column($flats, 'type'));
+                        rsort($uniqueTypes);
+                        foreach ($uniqueTypes as $key => $flat) {
+                    ?>
+                    <option value="<?php  echo $flat; ?>"><?php echo $flat; ?></option>
+                    <?php  } ?>
                 </select>
             </div>
         </div>
-                <div class="search_group">
-            <div>
-                NUMER BUDYNKU
-            </div>
-            <div class="search_inputs">
-                <select class="search-input-select" name="budynek">
-                    <option value="0">BUDYNEK A</option>
-                    <option value="40">BUDYNEK B</option>
-                    <option value="50">BUDYNEK C</option>
-                </select>
-            </div>
-        </div>
-                <div class="search_group">
+        <div class="search_group">
             <div>
                 PIĘTRO
             </div>
             <div class="search_inputs">
-                <select class="search-input-select" name="pietro_from">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                <select class="search-input-select" name="pietro_from" onchange="applySearchFilter()">
+                    <?php 
+                        $uniqueFloors = array_unique(array_column($flats, 'floor'));
+                        sort($uniqueFloors, SORT_NUMERIC);
+                        foreach ($uniqueFloors as $key => $flat) {
+                    ?>
+                    <option value="<?php  echo $flat; ?>"><?php echo $flat; ?></option>
+                    <?php  } ?>
                 </select>
-                <select class="search-input-select" name="pietro_to">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                <select class="search-input-select" name="pietro_to" onchange="applySearchFilter()">
+                    <?php 
+                        $uniqueFloors = array_unique(array_column($flats, 'floor'));
+                        rsort($uniqueFloors, SORT_NUMERIC);
+                        foreach ($uniqueFloors as $key => $flat) {
+                    ?>
+                    <option value="<?php  echo $flat; ?>"><?php echo $flat; ?></option>
+                    <?php  } ?>
                 </select>
             </div>
         </div>
@@ -393,17 +391,22 @@
                 POWIERZCHNIA (m²)
             </div>
             <div class="search_inputs">
-                <select class="search-input-select" name="area_from">
-                    <option value="45">45</option>
-                    <option value="65">65</option>
-                    <option value="85">85</option>
-                    <option value="110">110</option>
+                <select class="search-input-select" name="area_from" onchange="applySearchFilter()">
+                    <option value="20">20</option>
+                    <option value="40">40</option>
+                    <option value="60">60</option>
+                    <option value="80">80</option>
+                    <option value="100">100</option>
+                    <option value="120">120</option>
                 </select>
-                <select class="search-input-select" name="area_to">
-                    <option value="45">45</option>
-                    <option value="65">65</option>
-                    <option value="85">85</option>
-                    <option value="110">110</option>
+                <select class="search-input-select" name="area_to" onchange="applySearchFilter()">
+                    <option value="200">200</option>
+                    <option value="160">160</option>
+                    <option value="140">140</option>
+                    <option value="100">100</option>
+                    <option value="80">80</option>
+                    <option value="60">60</option>
+                    <option value="40">40</option>
                 </select>
             </div>
         </div>
@@ -413,19 +416,19 @@
                 ZAKRES CENOWY (zł)
             </div>
             <div class="search_inputs">
-                <select class="search-input-select" name="cena_from">
+                <select class="search-input-select" name="cena_from" onchange="applySearchFilter()">
                     <option value="0">0 tys.</option>
-                    <option value="500">500 tys.</option>
-                    <option value="700">700 tys.</option>
-                    <option value="900">900 tys.</option>
-                    <option value="1450">1 450 tys.</option>
+                    <option value="500000">500 tys.</option>
+                    <option value="700000">700 tys.</option>
+                    <option value="900000">900 tys.</option>
+                    <option value="1450000">1 450 tys.</option>
                 </select>
-                <select class="search-input-select" name="cena_to">
-                    <option value="500">500 tys.</option>
-                    <option value="700">700 tys.</option>
-                    <option value="900">900 tys.</option>
-                    <option value="1450">1 450 tys.</option>
-                    <option value="999999">i więcej...</option>
+                <select class="search-input-select" name="cena_to" onchange="applySearchFilter()">
+                    <option value="500000">500 tys.</option>
+                    <option value="700000">700 tys.</option>
+                    <option value="900000">900 tys.</option>
+                    <option value="1450000">1 450 tys.</option>
+                    <option value="999999000">i więcej...</option>
                 </select>
             </div>
         </div>
@@ -435,17 +438,23 @@
                 ILOŚĆ POKOI
             </div>
             <div class="search_inputs">
-                <select class="search-input-select" name="pokoje_from">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
+                <select class="search-input-select" name="pokoje_from" onchange="applySearchFilter()">
+                    <?php 
+                        $uniqueFloors = array_unique(array_column($flats, 'rooms'));
+                        sort($uniqueFloors, SORT_NUMERIC);
+                        foreach ($uniqueFloors as $key => $flat) {
+                    ?>
+                    <option value="<?php  echo $flat; ?>"><?php echo $flat; ?></option>
+                    <?php  } ?>
                 </select>
-                <select class="search-input-select" name="pokoje_to">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
+                <select class="search-input-select" name="pokoje_to" onchange="applySearchFilter()">
+                    <?php 
+                        $uniqueFloors = array_unique(array_column($flats, 'rooms'));
+                        rsort($uniqueFloors, SORT_NUMERIC);
+                        foreach ($uniqueFloors as $key => $flat) {
+                    ?>
+                    <option value="<?php  echo $flat; ?>"><?php echo $flat; ?></option>
+                    <?php  } ?>
                 </select>
             </div>
         </div>
@@ -453,7 +462,7 @@
     </div>
     <div class="search_row_bottom">
         <div class="checkbox_container">
-            <div class="mycheckbox">
+            <div class="custom_checkbox">
                 <input type="checkbox" style="display: none;" name="Promocja">
             </div>
             <div class="checkbox_label">
@@ -462,7 +471,7 @@
             </div>
         </div>
         <div class="checkbox_container">
-            <div class="mycheckbox">
+            <div class="custom_checkbox">
                 <input type="checkbox" style="display: none;" name="Wolne">
             </div>
             <div class="checkbox_label">
@@ -471,7 +480,7 @@
             </div>
         </div>
         <div class="checkbox_container">
-            <div class="mycheckbox">
+            <div class="custom_checkbox">
                 <input type="checkbox" style="display: none;" name="Rezerwacja">
             </div>
             <div class="checkbox_label">
@@ -480,248 +489,37 @@
             </div>
         </div>
         <div class="checkbox_container">
-            <div class="mycheckbox">
+            <div class="custom_checkbox">
                 <input type="checkbox" style="display: none;" name="Sprzedane">
             </div>
             <div class="checkbox_label">
                 <span>Sprzedane</span>
-                <span style="color: var(--SECONDARY);" id="value_Sprzedane">(0)</span>
+                <span style="color: var(--SECONDARY);" id="value_Wolne">(0)</span>
             </div>
         </div>
 
-        <div class="search-input-select_no_r_t" style="float: right; position: relative; margin-left: auto; width: 20rem;">
-            <div class="chosen_options_dd" id="wybrane_inwestycje">
-                Wszystkie
+        <div class="search-input-select_dropdown" style="float: right; position: relative; margin-left: auto; width: 20rem;">
+            <div class="chosen_options_dropdown" id="wybrane_inwestycje">
+                Wszystkie inwestycje
             </div>
             <div class="drop_down_options">
-                <div class="checkbox_container">
-                    <div class="mycheckbox">
-                        <input type="checkbox" style="display: none;">
+                <?php foreach ($flatLinks as $flatLink) { ?>
+                    <div class="checkbox_container">
+                        <div class="custom_checkbox">
+                            <input class="wybrane_inwestycje_checkbox" type="checkbox" style="display: none;" value="<?php echo $flatLink['slug'] ?>" name="wybrane_inwestycje_checkbox">
+                        </div>
+                        <div class="checkbox_label">
+                            <span><?php echo $flatLink['title'] ?></span>
+                        </div>
                     </div>
-                    <div class="checkbox_label">
-                        <span>Srebrzyńska Park II</span>
-                    </div>
-                </div>
-                <div class="checkbox_container">
-                    <div class="mycheckbox">
-                        <input type="checkbox" style="display: none;">
-                    </div>
-                    <div class="checkbox_label">
-                        <span>Osiedle Łososiowa</span>
-                    </div>
-                </div>
-                <div class="checkbox_container">
-                    <div class="mycheckbox">
-                        <input type="checkbox" style="display: none;">
-                    </div>
-                    <div class="checkbox_label">
-                        <span>Domy Klimatyczna</span>
-                    </div>
-                </div>
-                <div class="checkbox_container">
-                    <div class="mycheckbox">
-                        <input type="checkbox" style="display: none;">
-                    </div>
-                    <div class="checkbox_label">
-                        <span>InPark</span>
-                    </div>
-                </div>
-                <div class="checkbox_container">
-                    <div class="mycheckbox">
-                        <input type="checkbox" style="display: none;">
-                    </div>
-                    <div class="checkbox_label">
-                        <span>Srebrzyńska Park IV</span>
-                    </div>
-                </div>
+                <?php } ?>
             </div>
         </div>
-
     </div>
-
 </div>
 
-<style>
-.chosen_options_dd{
-    overflow: clip;
-}
-
-.search-input-select_no_r_t:hover .drop_down_options {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.drop_down_options{
-    opacity: 0;
-    pointer-events: none;
-    background-color: var(--Biały);
-    border: 1px ;
-    position: absolute;
-    border: 1px solid #dbdbdb;
-    padding: 16px;
-    border-radius: 2px;
-    transform: translate(-17px, 16px);
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: calc(100% - 32px);
-    overflow: clip;
-    z-index: 9;
-}
-
-:root{
-    --Primary: #020C24;
-}
-
-.wyszukiwarka_lokali{
-    place-self: center;
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    gap: 55px;
-    padding-top: 60px;
-    padding-bottom: 60px;
-}
-
-.search-title {
-    margin: 0;
-    font-size: 4rem;
-    font-weight: 400;
-}
-
-.search_row{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 50px;
-    justify-content: flex-start;
-    align-items: flex-start;
-    width: 100%;
-}
-
-.search_group{
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 180px;
-    min-width: 180px;
-    max-width: 1fr;
-    gap: 10px;
-    box-sizing: border-box;
-    align-items: flex-start;
-}
-.search_inputs {
-    width: 100%;
-}
-
-.search_row_bottom{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 50px;
-    justify-content: flex-start;
-    width: 100%;
-    align-items: anchor-center;
-}
-
-
-.search_inputs{
-    display: flex;
-    flex-direction: row;
-    justify-items: center;
-    align-items: center;
-    gap: 20px;
-}
-
-.search-input-select {
-    border: 1px solid #dbdbdb;
-    padding: 16px;
-    width: 100%;
-    -webkit-appearance: none;
-    appearance: none;
-     background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAANCAYAAAC+ct6XAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RjBBRUQ1QTQ1QzkxMTFFMDlDNDdEQzgyNUE1RjI4MTEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RjBBRUQ1QTU1QzkxMTFFMDlDNDdEQzgyNUE1RjI4MTEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGMEFFRDVBMjVDOTExMUUwOUM0N0RDODI1QTVGMjgxMSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGMEFFRDVBMzVDOTExMUUwOUM0N0RDODI1QTVGMjgxMSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pk5mU4QAAACUSURBVHjaYmRgYJD6////MwY6AyaGAQIspCieM2cOjKkIxCFA3A0TSElJoZ3FUCANxAeAWA6IOYG4iR5BjWwpCDQCcSnNgxoIVJCDFwnwA/FHWlp8EIpHSKoGgiggLkITewrEcbQO6mVAbAbE+VD+a3IsJTc7FQAxDxD7AbEzEF+jR1DDywtoCr9DbhwzDlRZDRBgACYqHJO9bkklAAAAAElFTkSuQmCC10);
-    background-position: center right;
-    background-repeat: no-repeat;
-    background-color: #FFF;
-    border-radius: 2px;
-    transition: .2s all ease-in-out;
-}
-
-.search-input-select_no_r_t {
-    border: 1px solid #dbdbdb;
-    padding: 16px;
-    width: 100%;
-    -webkit-appearance: none;
-    appearance: none;
-    background-position: center right;
-    background-repeat: no-repeat;
-    background-color: #FFF;
-    border-radius: 2px;
-    transition: .2s all ease-in-out;
-}
-
-
-.mycheckbox {
-  border: 1px solid var(--IKONY_DEFAULT);
-  width: 26px;
-  height: 26px;
-  cursor: pointer;
-  position: relative;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease;
-  border-color: var(--SECONDARY);
-  
-}
-
-.mycheckbox::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 16px;
-    height: 16px;
-    background-color: var(--SECONDARY);
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.2s ease;
-    box-sizing: border-box;
-    pointer-events: none;
-}
-
-.mycheckbox.mycheckbox-checked {
-  border-color: var(--SECONDARY);
-}
-
-.mycheckbox.mycheckbox-checked::after {
-  transform: translate(-50%, -50%) scale(1);
-}
-
-.checkbox_container{
-    display: flex;
-    flex-direction: row;
-    justify-items: center;
-    align-items: center;
-    gap: 15px;
-}
-
-.checkbox_label{
-    color: var(--Primary);
-}
-
-</style>
-<script>
-document.addEventListener("DOMContentLoaded", function(event) {
-  document.querySelectorAll('.mycheckbox').forEach(el => {
-    el.addEventListener('click', function (e) {
-      const input = el.querySelector('input[type="checkbox"]');
-      const checked = el.classList.toggle('mycheckbox-checked');
-      if (input) input.checked = checked;
-    });
-  });
-});
-</script>
-
-
-<div class="container" id="wyszukiwarka">
-    <div class="popup" id="dodatki_popup">
+<div class="search_container" id="wyszukiwarka">
+    <div class="dodatki_popup" id="dodatki_popup">
         <div class="popup_exit_btn" onclick="togglePopup(this)">
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
@@ -731,20 +529,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
             </div>
         </div>
         <div class="content">
-            <div class="sort_po">
+            <div class="sort_po_section">
                 Sortuj po cenie:
                 <select name="sort_by_price" id="sort_by_price">
                     <option value="chapest">Od Najtaszej</option>
                     <option value="expensiviestxd">Od Najdroższej</option>
                 </select>
             </div>
-            <div class="wybory">
+            <div class="popup_options_grid">
                 <div class="options_wybory">
                     <div class="options_title">KOMÓRKA</div>
                     <ul class="popup_ul">
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -755,7 +553,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -766,7 +564,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -777,7 +575,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -788,7 +586,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -799,7 +597,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -810,7 +608,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -821,7 +619,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -832,7 +630,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -843,7 +641,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -877,7 +675,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     <ul class="popup_ul">
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -888,7 +686,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -899,7 +697,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -910,7 +708,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -921,7 +719,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -932,7 +730,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -943,7 +741,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -954,7 +752,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -965,7 +763,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -976,7 +774,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -1008,7 +806,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     <ul class="popup_ul">
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -1019,7 +817,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -1030,7 +828,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -1041,7 +839,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -1052,7 +850,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -1063,7 +861,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -1074,7 +872,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -1085,7 +883,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -1096,7 +894,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -1107,7 +905,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         </li>
                         <li>
                             <div>
-                                <div class="myradio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
+                                <div class="custom_radio"><input type="radio" style="opacity: 0; position: absolute; z-index: -1;"></div>
                             </div>
                             <div class="nazwa_opcja">
                                 komorka nr 1
@@ -1162,83 +960,82 @@ document.addEventListener("DOMContentLoaded", function(event) {
         </div>
     </div>
 
-    <div class="wyniki">
+    <div class="search_wyniki_section">
         <div class="search-title">
             Wyniki wyszukiwarki
         </div>
         
-        <table class="apartamenty_table" id="apartamenty_table">
+        <table class="search_wyniki_table" id="search_wyniki_table">
             <thead>
-              
                 <tr>
-                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_type">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" id="sort_type">
+                        <div class="search_table_wyniki_header">
                             <span>Typ</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_name">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" id="sort_name">
+                        <div class="search_table_wyniki_header">
                             <span>Nazwa inewstycji</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_number">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" id="sort_number">
+                        <div class="search_table_wyniki_header">
                             <span>Numer</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_pokoje">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" id="sort_pokoje">
+                        <div class="search_table_wyniki_header">
                             <span>Pokoje</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_pietro">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" id="sort_pietro">
+                        <div class="search_table_wyniki_header">
                             <span>Piętro</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_pow">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" id="sort_pow">
+                        <div class="search_table_wyniki_header">
                             <span>Pow.</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_cena">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" id="sort_cena">
+                        <div class="search_table_wyniki_header">
                             <span>Cena [zł]</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_status">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" id="sort_status">
+                        <div class="search_table_wyniki_header">
                             <span>Status</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_rzut">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" id="sort_rzut">
+                        <div class="search_table_wyniki_header">
                             <span>Rzut</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_spacer">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" id="sort_spacer">
+                        <div class="search_table_wyniki_header">
                             <span>Wirtualny<br/>spacer</span>
                             <span>-</span>
                         </div>
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_widok">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" id="sort_widok">
+                        <div class="search_table_wyniki_header">
                             <span>Widok 3D</span>
                             <span>-</span>
                         </div>                        
                     </th>
-                    <th class="center" onclick="sort_col_by(this)" style="padding-right: 15px;" id="sort_dodatki">
-                        <div style="display: flex; flex-direction: row; justify-items: center; align-items: center; gap: 5px; text-align: center; justify-content: center;">
+                    <th class="center" onclick="sort_col_by(this)" id="sort_dodatki">
+                        <div class="search_table_wyniki_header">
                             <span>Wybierz</span>
                             <span>-</span>
                         </div>  
@@ -1246,38 +1043,39 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 </tr>
             </thead>
             <tbody style="opacity: 0; height: 20px;"></tbody>
-            <tbody id="apartament_table_body">
-              <?php $count = 0; ?>
+            <tbody id="search_table_body">
               <?php foreach ($flats as $key => $flat) { ?>
-                <tr <?= ($count++ <= 9) ? '' : ' style="display: none;" disp="false"'  ?>>
-                      <td class="center">
+                <tr filterHide="false" DataGather="slug" slug="<?php echo $flat['slug']; ?>">
+                      <td class="center" DataGather="type_value">
                           <?= $flat['type'] ?>
                       </td>
-                      <td class="center">
-                        <div class="search-table-col search-col-name">
-                          <img src="<?= $flat['image_path'] ?>" class="search-table-col-logo">
-                        </div>
+                      <td class="center" DataGather="name_value">
+                        <img src="<?= $flat['image_path'] ?>" class="search-table-col-logo">
                       </td>
-                      <td class="center">
+                      <td class="center" DataGather="local_number_value">
                           <?= $flat['local_number'] ?>
                       </td>
-                      <td class="center">
+                      <td class="center" DataGather="rooms_value">
                           <?= $flat['rooms'] ?>
                       </td>
-                      <td class="center">
+                      <td class="center" DataGather="floor_value">
                           <?= $flat['floor'] ?>
                       </td>
-                      <td class="center">
+                      <td class="center" DataGather="area_value">
                           <?= flatAreaFormat($flat['area']) ?>
                       </td>
                       <td class="center cena" style="display: flex; flex-direction: column; gap: 0;">
-                          <span class="center smaller_cena_text crossed_cena_text"><?= flatPriceFormat($flat['price'], $flat['ask_for_price']) ?></span>
-                          <span class="center"><?= flatPriceFormat($flat['promotion_price'], $flat['ask_for_price']) ?></span>
-                          <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
-                          <span class="center smaller_cena_text"><?= flatPriceFormat($flat['price'], $flat['ask_for_price']) ?></span>
+                        <?php if ($flat['promotion_price']) { ?>
+                            <span class="center smaller_cena_text crossed_cena_text"><?= flatPriceFormat($flat['price'], $flat['ask_for_price']) ?></span>
+                            <span class="center" DataGather="prive_value"><?= flatPriceFormat($flat['promotion_price'], $flat['ask_for_price']) ?></span>
+                            <span class="center smaller_cena_text">cena z ostatnich 30 dni:</span>
+                            <span class="center smaller_cena_text"><?= flatPriceFormat($flat['price'], $flat['ask_for_price']) ?></span>
+                        <?php } else { ?>
+                            <span class="center" DataGather="prive_value"><?= flatPriceFormat($flat['promotion_price'], $flat['ask_for_price']) ?></span>
+                        <?php } ?>
                       </td>
-                      <td class="center">
-                          <span class="search-col-status-label status-<?= $flat['status_id'] ?>"><?= getStatusLabel($flat['status_id']) ?></span>
+                      <td class="center" >
+                          <span DataGather="status_value" class="search-col-status-label status-<?= $flat['status_id'] ?>"><?= getStatusLabel($flat['status_id']) ?></span>
                       </td>
                       <td class="center">
                           <div class="search-col-rzut-link" data-url="<?= $flat['card_link'] ?>"></div>
@@ -1312,24 +1110,512 @@ document.addEventListener("DOMContentLoaded", function(event) {
       </div>
     </div>
 </div>
+    <?php include APPPATH . '/views/partials/footer.php'; ?>
+    <?php include 'admin.php'; ?>
 
-<script>
-function showMore() {
-  let count = 0;
-  Array.from(document.getElementById('apartament_table_body').children)
-    .forEach(element => count < 9 && element.getAttribute("disp") === "false" && (element.removeAttribute("disp"), element.style.display = "", count++));
-}
-
+    <script>
+    // Kurwa xd, jak coś to Andrzej, nie ja ;p
+    let visibleCount = 9;
+    const styleSheet = document.styleSheets[0];
+    function insertCSSRule() {
+        styleSheet.insertRule(`#search_table_body > tr:nth-child(n+${visibleCount + 1}) { display: none !important; }`, styleSheet.cssRules.length);
+    }
+    insertCSSRule();
+    function showMore() {
+        visibleCount += 9;
+        styleSheet.deleteRule(styleSheet.cssRules.length - 1);
+        insertCSSRule();
+    }
 </script>
 
+
+        <script>
+            // custom radio/checkbox
+            document.addEventListener("DOMContentLoaded", function(event) {
+                document.querySelectorAll('.custom_radio').forEach(el => {
+                    el.addEventListener('click', function (e) {
+                        const input = el.querySelector('input[type="radio"]');
+                        const checked = el.classList.toggle('custom_radio-checked');
+                        if (input) input.checked = checked;
+                    });
+                });
+            });
+
+            document.addEventListener("DOMContentLoaded", function(event) {
+                document.querySelectorAll('.custom_checkbox').forEach(el => {
+                    el.addEventListener('click', function (e) {
+                        const input = el.querySelector('input[type="checkbox"]');
+                        const checked = el.classList.toggle('custom_checkbox-checked');
+                        if (input) input.checked = checked;
+                        applySearchFilter();
+                        UpdateCheckboxesValues();
+                    });
+                });
+            });
+        </script>
+
+        <script>
+            // mechanizm zwin/rozwin
+            const zwin_btns = document.getElementsByClassName('btn_zwin');
+            Array.from(zwin_btns).forEach(btn => {
+                let expanded = false;
+                const optionsWybory = btn.closest('.options_wybory');
+                const popupUl = optionsWybory ? optionsWybory.querySelector('.popup_ul') : null;
+                if (!popupUl) return;
+                const elementy_listy = popupUl.children;
+
+                //hide by default
+                Array.from(elementy_listy).forEach((element, index) => {
+                    if (index > 2) {
+                        element.style.display = 'none';
+                    }
+                });
+
+                btn.addEventListener('click', (e) => {
+                    if (expanded) {
+                        btn.children[0].textContent = 'ROZWIŃ';
+                        btn.children[1].style.transform = "rotate(0deg)";
+                        Array.from(elementy_listy).forEach((element, index) => {
+                            if (index > 2) {
+                                element.style.display = 'none';
+                            }
+                        });
+                    } else {
+                        btn.children[0].textContent = 'ZWIŃ';
+                        btn.children[1].style.transform = "rotate(180deg)";
+                        Array.from(elementy_listy).forEach(element => {
+                            element.style.display = 'flex';
+                        });
+                    }
+                    expanded = !expanded;
+                });
+            });
+        </script>
+
+        <script>
+            // sortowanie po cenie w popupie
+            const select = document.getElementById('sort_by_price');
+            const uls = document.getElementsByClassName('popup_ul');
+
+            function sort(by = 'asc') {
+                Array.from(uls).forEach(ul => {
+                    const lis = Array.from(ul.children);
+                    lis.sort((a, b) => {
+                        const cenaA = parseFloat(a.querySelector('.cena_opcji').textContent) || 0;
+                        const cenaB = parseFloat(b.querySelector('.cena_opcji').textContent) || 0;
+                        return by === 'asc' ? cenaA - cenaB : cenaB - cenaA;
+                    });
+                    lis.forEach(li => ul.appendChild(li));
+                });
+            }
+
+            select.addEventListener('change', function (e) {
+                const selected_value = select.value;
+                switch(selected_value)
+                {
+                    case 'chapest':
+                        sort('asc');
+                        break;
+                    case 'expensiviestxd':
+                        sort('desc');
+                        break;
+                    default:
+                        break;
+                }
+            });
+        </script>
+
+        <script>
+            // Show and hide dodatki_popup, dim table, close on X or outside
+            const table = document.getElementById('search_wyniki_table');
+            const dodatki_popup = document.getElementById('dodatki_popup');
+            let chosenRow = null;
+
+            function showPopup(trigger) {
+                if (!dodatki_popup) return;
+                dodatki_popup.classList.add('visible');
+                table.style.opacity = '0.4';
+                chosenRow = trigger;
+                document.addEventListener('mousedown', outsideClickHandler);
+            }
+
+            function hidePopup() {
+                if (!dodatki_popup) return;
+                dodatki_popup.classList.remove('visible');
+                table.style.opacity = '';
+                chosenRow = null;
+                document.removeEventListener('mousedown', outsideClickHandler);
+            }
+
+            function togglePopup(trigger) {
+                const exitBtn = document.querySelector('.popup_exit_btn');
+                if (!dodatki_popup) return;
+
+                if (!dodatki_popup.classList.contains('visible')) {
+                    showPopup(trigger);
+                    return;
+                }
+
+                if (trigger === exitBtn || trigger === chosenRow) {
+                    hidePopup();
+                    return;
+                }
+
+                chosenRow = trigger;
+            }
+
+            function outsideClickHandler(e) {
+                if (!dodatki_popup.classList.contains('visible')) return;
+                if (!dodatki_popup.contains(e.target)) {
+                    hidePopup();
+                }
+            }
+        </script>
+
+        <script>
+            const sortStates = {};
+            const sortPriority = [];
+
+            function sort_col_by(element) {
+                const table = document.getElementById('search_table_body');
+                const rows = Array.from(table.querySelectorAll('tr'));
+                const notFilteredRows = rows.filter(r => r.getAttribute("filterHide") !== "true");
+
+                const id = element.id;
+                sortStates[id] = sortStates[id] === 1 ? -1 : 1;
+                const dir = sortStates[id];
+
+                sortPriority.splice(sortPriority.indexOf(id), 1);
+                if (dir !== 0) sortPriority.push(id);
+
+                const getters = {
+                    'sort_type': r => r.querySelector('[DataGather="type_value"]')?.textContent.trim().toLowerCase() || '',
+                    'sort_number': r => r.querySelector('[DataGather="local_number_value"]')?.textContent.trim().toLowerCase() || '',
+                    'sort_pokoje': r => parseFloat(r.querySelector('[DataGather="rooms_value"]')?.textContent.trim().toLowerCase().trim() ) || 0,
+                    'sort_pietro': r => parseFloat(r.querySelector('[DataGather="floor_value"]')?.textContent.trim().toLowerCase().trim() ) || 0,
+                    'sort_pow': r => parseFloat(r.querySelector('[DataGather="area_value"]')?.textContent.trim().toLowerCase().replace('m²', '').replace(',', '.').trim() ) || 0,
+                    'sort_cena': r => parseFloat(r.querySelector('[DataGather="prive_value"]')?.textContent.trim().toLowerCase().replace('zł', '').replace(',', '.').trim() ) || 0,
+                    'sort_status': r => r.querySelector('[DataGather="status_value"]')?.textContent.trim().toLowerCase() || '',
+                    //TODO NA POTEM
+                    // jeszcze chyba sort_name bedzie
+                    // 'sort_rzut': r => r.querySelector('[DataGather="type_value"]')?.textContent.trim().toLowerCase() || '',
+                    // 'sort_spacer': r => r.querySelector('[DataGather="type_value"]')?.textContent.trim().toLowerCase() || '',
+                    // 'sort_widok': r => r.querySelector('[DataGather="type_value"]')?.textContent.trim().toLowerCase() || '',
+                    // 'sort_dodatki': r => r.querySelector('[DataGather="type_value"]')?.textContent.trim().toLowerCase() || '',
+                    // dodaj inne kolumny tu
+                };
+
+                notFilteredRows.sort((a, b) => {
+                    for (const key of sortPriority) {
+                        const getter = getters[key];
+                        const d = sortStates[key];
+                        const valA = getter(a);
+                        const valB = getter(b);
+                        const cmp = (typeof valA === 'number' && typeof valB === 'number')
+                            ? valA - valB
+                            : valA.localeCompare(valB);
+                        if (cmp !== 0) return d === 1 ? cmp : -cmp;
+                    }
+                    return 0;
+                });
+
+                notFilteredRows.forEach(row => table.appendChild(row));
+
+                const sortIcon = element.children[0].children[1];
+                if (dir === 1) sortIcon.textContent = '⭡';
+                else if (dir === -1) sortIcon.textContent = '⭣';
+                else sortIcon.textContent = '-';
+
+                MoveHiddenByFilterAtTheEnd();
+            }
+        </script>
+
+        <script>
+            // mechanizm filtrowania
+            function applySearchFilter() {
+                const table = document.getElementById('search_table_body');
+                const rows = Array.from(table.querySelectorAll('tr'));
+
+                const wybrane_inwestycje_checkboxy = document.querySelectorAll('[name="wybrane_inwestycje_checkbox"]:checked');
+                const valuesArray = Array.from(wybrane_inwestycje_checkboxy).map(checkbox => checkbox.value);
+
+                let filter = {
+                    "type": document.querySelector('[name="type"]').value,
+                    "wybrane_inwestycje_checkbox" : valuesArray,
+                    "Sprzedane" : document.querySelector('[name="Sprzedane"]').checked,
+                    "Rezerwacja" : document.querySelector('[name="Rezerwacja"]').checked,
+                    "Wolne" : document.querySelector('[name="Wolne"]').checked,
+                    "Promocja" : document.querySelector('[name="Promocja"]').checked,
+                    "pokoje_to" : parseFloat(document.querySelector('[name="pokoje_to"]').value),
+                    "pokoje_from" : parseFloat(document.querySelector('[name="pokoje_from"]').value),
+                    "cena_to" : parseFloat(document.querySelector('[name="cena_to"]').value),
+                    "cena_from" : parseFloat(document.querySelector('[name="cena_from"]').value),
+                    "area_to" : parseFloat(document.querySelector('[name="area_to"]').value),
+                    "area_from" : parseFloat(document.querySelector('[name="area_from"]').value),
+                    "pietro_to" : parseFloat(document.querySelector('[name="pietro_to"]').value),
+                    "pietro_from" : parseFloat(document.querySelector('[name="pietro_from"]').value),
+                };
+
+                statuses = [];
+                console.log(filter['wybrane_inwestycje_checkbox']);
+                for (const key of ["Sprzedane", "Rezerwacja", "Wolne", "Promocja"]) {
+                    if (filter[key]) statuses.push(key)
+                }
+
+                Array.from(rows).forEach(row => {
+                    const values = {
+                        'sort_type': row.querySelector('[DataGather="type_value"]')?.textContent.trim() || '',
+                        'sort_pokoje': parseFloat(row.querySelector('[DataGather="rooms_value"]')?.textContent.trim().toLowerCase()) || 0,
+                        'sort_pietro': parseFloat(row.querySelector('[DataGather="floor_value"]')?.textContent.trim().toLowerCase()) || 0,
+                        'sort_pow': parseFloat(row.querySelector('[DataGather="area_value"]')?.textContent.trim().toLowerCase().replace('m²', '').replace(',', '.').trim()) || 0,
+                        'sort_cena': parseFloat(row.querySelector('[DataGather="prive_value"]')?.textContent.trim().toLowerCase().replace('zł', '').replace(',', '.').replace(' ', '').trim()) || 0,
+                        'sort_status': row.querySelector('[DataGather="status_value"]')?.textContent.trim() || '',
+                        'slug': row.getAttribute('slug').trim() || '',
+                    };
+
+                    if(
+                        (filter['wybrane_inwestycje_checkbox'].length != 0 && !filter['wybrane_inwestycje_checkbox'].includes(values['slug'])) ||
+                        (statuses.length != 0 && !statuses.includes(values['sort_status'])) ||
+                        values['sort_type'] != filter['type'] ||
+                        values['sort_pietro'] < filter['pietro_from'] || values['sort_pietro'] > filter['pietro_to'] ||
+                        values['sort_pokoje'] < filter['pokoje_from'] || values['sort_pokoje'] > filter['pokoje_to'] ||
+                        values['sort_pow'] < filter['area_from'] || values['sort_pow'] > filter['area_to'] ||
+                        values['sort_cena'] < filter['cena_from'] || values['sort_cena'] > filter['cena_to']
+                    ){
+                        row.setAttribute('filterHide', 'true');
+                        row.style.display = 'none';
+                    }else{
+                        row.setAttribute('filterHide', 'false');
+                        row.style.display = '';
+                    }
+                });
+                MoveHiddenByFilterAtTheEnd();
+                UpdateCheckboxesValues();
+            }
+
+            function MoveHiddenByFilterAtTheEnd(){
+                const table = document.getElementById('search_table_body');
+                const rows = Array.from(table.querySelectorAll('tr'));
+                const hidden = rows.filter(r => r.getAttribute("filterHide") == "true");
+                hidden.forEach(r => table.appendChild(r));
+            }
+
+            function UpdateCheckboxesValues(){
+                const table = document.getElementById('search_table_body');
+                const rows = Array.from(table.querySelectorAll('tr'));
+                const notFilteredRows = rows.filter(r => r.getAttribute("filterHide") !== "true");
+
+                const statusValues = notFilteredRows.flatMap(r => Array.from(r.querySelectorAll('[DataGather="status_value"]')));
+                const counts = { Promocja: 0, Wolne: 0, Rezerwacja: 0, Sprzedane: 0 };
+                statusValues.forEach(e => {
+                    const val = e.textContent.trim();
+                    if (counts.hasOwnProperty(val)) counts[val]++;
+                });
+                
+                let Label = document.getElementById('value_Promocja');
+                Label.textContent = `(${counts.Promocja || 0})`;
+                Label = document.getElementById('value_Sprzedane');
+                Label.textContent = `(${counts.Sprzedane || 0})`;
+                Label = document.getElementById('value_Rezerwacja');
+                Label.textContent = `(${counts.Rezerwacja || 0})`;
+                Label = document.getElementById('value_Wolne');
+                Label.textContent = `(${counts.Wolne || 0})`;
+            }
+
+            document.addEventListener("DOMContentLoaded", function(event) {
+                UpdateCheckboxesValues();
+            });
+            
+        </script>
+  </body>
+</html>
 
 
 
 <style>
-    thead th{
-        cursor: pointer;
+    :root {
+        --IKONY_DEFAULT: #979BA6;
+        --SECONDARY: #EC964F;
+        --SZARY: #EFEFEF;
+        --HOVER: #D5D5D5;
+        --Czarny: #000000;
+        --Biały: #FFFFFF;
+        --ETYKIETA_WOLNE: #01B635;
+        --SECONDARYHOVER: #E77B21;
+        --Primary: #020C24;
+        --Background: #F9F9F9;
     }
-    .popup{
+
+    .search_table_wyniki_header{
+        display: flex; 
+        flex-direction: row; 
+        justify-items: center; 
+        align-items: center; 
+        gap: 5px; 
+        text-align: center; 
+        justify-content: center;
+    }
+    
+    .chosen_options_dropdown{
+        overflow: clip;
+    }
+
+    .search-input-select_dropdown:hover .drop_down_options {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .drop_down_options{
+        opacity: 0;
+        pointer-events: none;
+        background-color: var(--Biały);
+        border: 1px ;
+        position: absolute;
+        border: 1px solid #dbdbdb;
+        padding: 16px;
+        border-radius: 2px;
+        transform: translate(-17px, 16px);
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        width: calc(100% - 32px);
+        overflow: clip;
+        z-index: 9;
+    }
+
+    .wyszukiwarka_lokali_filter_block{
+        place-self: center;
+        width: 85%;
+        display: flex;
+        flex-direction: column;
+        gap: 55px;
+        padding-top: 60px;
+        padding-bottom: 60px;
+    }
+
+    .search-title {
+        margin: 0;
+        font-size: 4rem;
+        font-weight: 400;
+    }
+
+    .search_row{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 50px;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .search_group{
+        display: flex;
+        flex-direction: column;
+        flex: 1 1 180px;
+        min-width: 180px;
+        max-width: 1fr;
+        gap: 10px;
+        box-sizing: border-box;
+        align-items: flex-start;
+    }
+    .search_inputs {
+        width: 100%;
+    }
+
+    .search_row_bottom{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 50px;
+        justify-content: flex-start;
+        width: 100%;
+        align-items: anchor-center;
+    }
+
+    .search_inputs{
+        display: flex;
+        flex-direction: row;
+        justify-items: center;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .search-input-select {
+        border: 1px solid #dbdbdb;
+        padding: 16px;
+        width: 100%;
+        -webkit-appearance: none;
+        appearance: none;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAANCAYAAAC+ct6XAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RjBBRUQ1QTQ1QzkxMTFFMDlDNDdEQzgyNUE1RjI4MTEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RjBBRUQ1QTU1QzkxMTFFMDlDNDdEQzgyNUE1RjI4MTEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpGMEFFRDVBMjVDOTExMUUwOUM0N0RDODI1QTVGMjgxMSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpGMEFFRDVBMzVDOTExMUUwOUM0N0RDODI1QTVGMjgxMSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pk5mU4QAAACUSURBVHjaYmRgYJD6////MwY6AyaGAQIspCieM2cOjKkIxCFA3A0TSElJoZ3FUCANxAeAWA6IOYG4iR5BjWwpCDQCcSnNgxoIVJCDFwnwA/FHWlp8EIpHSKoGgiggLkITewrEcbQO6mVAbAbE+VD+a3IsJTc7FQAxDxD7AbEzEF+jR1DDywtoCr9DbhwzDlRZDRBgACYqHJO9bkklAAAAAElFTkSuQmCC10);
+        background-position: center right;
+        background-repeat: no-repeat;
+        background-color: #FFF;
+        border-radius: 2px;
+        transition: .2s all ease-in-out;
+    }
+
+    .search-input-select_dropdown {
+        border: 1px solid #dbdbdb;
+        padding: 16px;
+        width: 100%;
+        -webkit-appearance: none;
+        appearance: none;
+        background-position: center right;
+        background-repeat: no-repeat;
+        background-color: #FFF;
+        border-radius: 2px;
+        transition: .2s all ease-in-out;
+    }
+
+
+    .custom_checkbox {
+    border: 1px solid var(--IKONY_DEFAULT);
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease;
+    border-color: var(--SECONDARY);
+    
+    }
+
+    .custom_checkbox::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 16px;
+        height: 16px;
+        background-color: var(--SECONDARY);
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.2s ease;
+        box-sizing: border-box;
+        pointer-events: none;
+    }
+
+    .custom_checkbox.custom_checkbox-checked {
+    border-color: var(--SECONDARY);
+    }
+
+    .custom_checkbox.custom_checkbox-checked::after {
+    transform: translate(-50%, -50%) scale(1);
+    }
+
+    .checkbox_container{
+        display: flex;
+        flex-direction: row;
+        justify-items: center;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .checkbox_label{
+        color: var(--Primary);
+    }
+
+    .dodatki_popup{
         opacity: 0;
         pointer-events: auto;
         grid-row-start: 1;
@@ -1339,19 +1625,15 @@ function showMore() {
         position: relative;
         z-index: 3;
     }
-
-    :root{
-        --Background: #F9F9F9; 
-    }
     
-    .container{
+    .search_container{
         align-items: self-start;
         width: 100%;
         background-color: var(--Background);
         display: grid;
     }
 
-    .wyniki{
+    .search_wyniki_section{
         grid-row-start: 1;
         grid-row-end: 1;
         grid-column-start: 1;
@@ -1364,9 +1646,10 @@ function showMore() {
         gap: 55px;
         padding-top: 60px;
         padding-bottom: 60px;
+        width: 85%;
     }
 
-    .apartamenty_table{
+    .search_wyniki_table{
         width: 100%;
         border-spacing: 0 5px;
         transition: all 0.5s ease;
@@ -1374,17 +1657,14 @@ function showMore() {
 
     .center{
         text-align: center;
-        font-size: 22px;
+        font-size: 18px;
         font-style: normal;
         font-weight: 400;
         line-height: normal;
         white-space: nowrap;
     }
 
-    tbody{
-        background-color: var(--SZARY)
-    }
-    table{
+    .search_wyniki_table{
         border-spacing: 0 5px;
         color: var(--Czarny);
         font-size: 16px;
@@ -1392,15 +1672,31 @@ function showMore() {
         font-weight: 400;
         line-height: normal;
     }
-    tr{
+
+    .search_wyniki_table tbody{
+        background-color: var(--SZARY);
+    }
+
+    .search_wyniki_table thead{
+        cursor: pointer;
+        padding-right: 15px;
+    }
+
+    .search_wyniki_table th{
+        cursor: pointer;
+        padding-right: 15px;
+    }
+
+    .search_wyniki_table tr{
         min-height: 80px;
         max-height: 80px;
     }
-    td{
+
+    .search_wyniki_table td{
         padding: 10px 10px 10px 10px;
         align-items: center;
         gap: 10px;
-        font-size: 22px;
+        font-size: 18px;
         font-style: normal;
         font-weight: 400;
         line-height: normal;
@@ -1410,6 +1706,7 @@ function showMore() {
         align-items: center;
         place-content: center;
     }
+
     .smaller_cena_text {
         white-space: nowrap;
         color: var(--IKONY_DEFAULT);
@@ -1431,87 +1728,9 @@ function showMore() {
         text-decoration-line: line-through;
         white-space: nowrap;
     }
-
     
-    @media screen and (max-width: 1450px) {
-        .center{
-            font-size: 18px;
-        }
 
-        table{
-            font-size: 12px;
-        }
-
-        td{
-            font-size: 18px;
-        }
-
-        .smaller_cena_text{
-            font-size: 8px;
-        }
-
-        .crossed_cena_text{
-            font-size: 12px;
-        }
-    }
-
-    @media screen and (max-width: 1150px) {
-        .center{
-            font-size: 14px;
-        }
-
-        table{
-            font-size: 10px;
-        }
-
-        td{
-            min-height: 60px;
-            font-size: 14px;
-        }
-
-        .smaller_cena_text{
-            font-size: 8px;
-        }
-
-        .crossed_cena_text{
-            font-size: 10px;
-        }
-    }
-
-    @media screen and (max-width: 991px) {
-        .center{
-            font-size: 10px;
-        }
-
-        table{
-            font-size: 10px;
-        }
-
-        td{
-            font-size: 10px;
-        }
-
-        .smaller_cena_text{
-            font-size: 8px;
-        }
-
-        .crossed_cena_text{
-            font-size: 10px;
-        }
-    }
-
-    :root {
-        --IKONY_DEFAULT: #979BA6;
-        --SECONDARY: #EC964F;
-        --SZARY: #EFEFEF;
-        --HOVER: #D5D5D5;
-        --Czarny: #000000;
-        --Biały: #FFFFFF;
-        --ETYKIETA_WOLNE: #01B635;
-        --SECONDARYHOVER: #E77B21;
-    }
-
-    .popup {
+    .dodatki_popup {
         background-color: white;
         justify-self: center;
         margin: 40px auto;
@@ -1526,12 +1745,12 @@ function showMore() {
         transition: all 0.5s ease;
     }
 
-    .popup.visible{
+    .dodatki_popup.visible{
         opacity: 1;
         pointer-events: auto;
     }
 
-    .container{
+    .search_container{
         transition: all 0.5s ease;
     }
 
@@ -1560,7 +1779,7 @@ function showMore() {
         width: auto;
     }
 
-    .sort_po {
+    .sort_po_section {
         font-weight: bold;
         margin-bottom: 8px;
         text-align: left;
@@ -1569,7 +1788,7 @@ function showMore() {
         font-size: 14px;
     }
 
-    .wybory {
+    .popup_options_grid {
         background-color: #eee;
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -1741,262 +1960,127 @@ function showMore() {
         background-color: var(--HOVER);
     }
 
-    @media screen and (max-width: 1130px) {
-        .wybory{
+    .custom_radio {
+        border: 2px solid var(--IKONY_DEFAULT);
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        position: relative;
+        box-sizing: border-box;
+        transition: border-color 0.2s ease;
+        border-color: var(--SECONDARY);
+    
+    }
+
+    .custom_radio::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 8px;
+        height: 8px;
+        background-color: var(--SECONDARY);
+        border-radius: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        transition: transform 0.2s ease;
+        box-sizing: border-box;
+        pointer-events: none;
+    }
+
+    .custom_radio.custom_radio-checked {
+        border-color: var(--SECONDARY);
+    }
+
+    .custom_radio.custom_radio-checked::after {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    .zobacz_lokal_btn{
+        align-self: right;
+        background-color: var(--Czarny);
+        color: white;
+        display: flex;
+        padding: 18px 26px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 19px;
+        align-self: self-end;
+        margin-top: 50px;
+    }
+
+    @media screen and (max-width: 1450px) {
+        .center{
+            font-size: 18px;
+        }
+
+        .search_wyniki_table table{
+            font-size: 12px;
+        }
+
+        .search_wyniki_table td{
+            font-size: 18px;
+        }
+
+        .smaller_cena_text{
+            font-size: 8px;
+        }
+
+        .crossed_cena_text{
+            font-size: 12px;
+        }
+    }
+
+    @media screen and (max-width: 1150px) {
+        .popup_options_grid{
             grid-template-columns: repeat(1, 1fr);
         }
+
+        .center{
+            font-size: 14px;
+        }
+
+        .search_wyniki_table table{
+            font-size: 10px;
+        }
+
+        .search_wyniki_table td{
+            min-height: 60px;
+            font-size: 14px;
+        }
+
+        .smaller_cena_text{
+            font-size: 8px;
+        }
+
+        .crossed_cena_text{
+            font-size: 10px;
+        }
+    }
+
+    @media screen and (max-width: 991px) {
+        .center{
+            font-size: 10px;
+        }
+
+        .search_wyniki_table table{
+            font-size: 10px;
+        }
+
+        .search_wyniki_table td{
+            font-size: 10px;
+        }
+
+        .smaller_cena_text{
+            font-size: 8px;
+        }
+
+        .crossed_cena_text{
+            font-size: 10px;
+        }
     }
 </style>
-
-
-</body>
-</html>
-
-<script>
-document.addEventListener("DOMContentLoaded", function(event) {
-  document.querySelectorAll('.myradio').forEach(el => {
-    el.addEventListener('click', function (e) {
-      const input = el.querySelector('input[type="radio"]');
-      const checked = el.classList.toggle('myradio-checked');
-      if (input) input.checked = checked;
-    });
-  });
-});
-</script>
-<style>
-.myradio {
-  border: 2px solid var(--IKONY_DEFAULT);
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  position: relative;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease;
-  border-color: var(--SECONDARY);
-  
-}
-
-.myradio::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 8px;
-    height: 8px;
-    background-color: var(--SECONDARY);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    transition: transform 0.2s ease;
-    box-sizing: border-box;
-    pointer-events: none;
-}
-
-.myradio.myradio-checked {
-  border-color: var(--SECONDARY);
-}
-
-.myradio.myradio-checked::after {
-  transform: translate(-50%, -50%) scale(1);
-}
-.zobacz_lokal_btn{
-    align-self: right;
-    background-color: var(--Czarny);
-    color: white;
-    display: flex;
-    padding: 18px 26px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 19px;
-    align-self: self-end;
-    margin-top: 50px;
-}
-</style>
-
-
-<script>
-    // mechanizm zwin/rozwin
-    const zwin_btns = document.getElementsByClassName('btn_zwin');
-    Array.from(zwin_btns).forEach(btn => {
-        let expanded = false;
-        const optionsWybory = btn.closest('.options_wybory');
-        const popupUl = optionsWybory ? optionsWybory.querySelector('.popup_ul') : null;
-        if (!popupUl) return;
-        const elementy_listy = popupUl.children;
-
-        //hide by default
-        Array.from(elementy_listy).forEach((element, index) => {
-            if (index > 2) {
-                element.style.display = 'none';
-            }
-        });
-
-        btn.addEventListener('click', (e) => {
-            if (expanded) {
-                btn.children[0].textContent = 'ROZWIŃ';
-                btn.children[1].style.transform = "rotate(0deg)";
-                Array.from(elementy_listy).forEach((element, index) => {
-                    if (index > 2) {
-                        element.style.display = 'none';
-                    }
-                });
-            } else {
-                btn.children[0].textContent = 'ZWIŃ';
-                btn.children[1].style.transform = "rotate(180deg)";
-                Array.from(elementy_listy).forEach(element => {
-                    element.style.display = 'flex';
-                });
-            }
-            expanded = !expanded;
-        });
-    });
-</script>
-
-<script>
-    // sortowanie po cenie
-    const select = document.getElementById('sort_by_price');
-    const uls = document.getElementsByClassName('popup_ul');
-
-    function sort(by = 'asc') {
-        Array.from(uls).forEach(ul => {
-            const lis = Array.from(ul.children);
-            lis.sort((a, b) => {
-                const cenaA = parseFloat(a.querySelector('.cena_opcji').textContent) || 0;
-                const cenaB = parseFloat(b.querySelector('.cena_opcji').textContent) || 0;
-                return by === 'asc' ? cenaA - cenaB : cenaB - cenaA;
-            });
-            lis.forEach(li => ul.appendChild(li));
-        });
-    }
-
-    select.addEventListener('change', function (e) {
-        const selected_value = select.value;
-        switch(selected_value)
-        {
-            case 'chapest':
-                sort('asc');
-                break;
-            case 'expensiviestxd':
-                sort('desc');
-                break;
-            default:
-                break;
-        }
-    });
-</script>
-
-<script>
-    // Show and hide popup, dim table, close on X or outside
-    const table = document.getElementById('apartamenty_table');
-    const popup = document.getElementById('dodatki_popup');
-    let chosenRow = null;
-
-    function showPopup(trigger) {
-        if (!popup) return;
-        popup.classList.add('visible');
-        table.style.opacity = '0.4';
-        chosenRow = trigger;
-        document.addEventListener('mousedown', outsideClickHandler);
-    }
-
-    function hidePopup() {
-        if (!popup) return;
-        popup.classList.remove('visible');
-        table.style.opacity = '';
-        chosenRow = null;
-        document.removeEventListener('mousedown', outsideClickHandler);
-    }
-
-    function togglePopup(trigger) {
-        const exitBtn = document.querySelector('.popup_exit_btn');
-        if (!popup) return;
-
-        if (!popup.classList.contains('visible')) {
-            showPopup(trigger);
-            return;
-        }
-
-        if (trigger === exitBtn || trigger === chosenRow) {
-            hidePopup();
-            return;
-        }
-
-        chosenRow = trigger;
-    }
-
-    function outsideClickHandler(e) {
-        if (!popup.classList.contains('visible')) return;
-        if (!popup.contains(e.target)) {
-            hidePopup();
-        }
-    }
-</script>
-
-
-<script>
-function sort_col_by(element) {
-    const table = document.getElementById('apartament_table_body');
-    const rows = Array.from(table.querySelectorAll('tr'));
-    let colIndex = Array.from(element.parentNode.children).indexOf(element);
-    let getValue;
-
-    switch (element.id) {
-        case 'sort_type':
-        case 'sort_name':
-        case 'sort_status':
-        case 'sort_rzut':
-        case 'sort_spacer':
-        case 'sort_widok':
-        case 'sort_dodatki':
-            getValue = row => row.children[colIndex].textContent.trim().toLowerCase();
-            break;
-        case 'sort_number':
-        case 'sort_pokoje':
-        case 'sort_pietro':
-        case 'sort_pow':
-            getValue = row => parseFloat(row.children[colIndex].textContent.replace(/[^\d.]/g, '')) || 0;
-            break;
-        case 'sort_cena':
-            getValue = row => {
-                const cenaSpan = row.children[colIndex].querySelectorAll('span.center')[1];
-                return cenaSpan ? parseFloat(cenaSpan.textContent.replace(/[^\d.]/g, '')) : 0;
-            };
-            break;
-        default:
-            return;
-    }
-
-    element.children[0].children[1].textContent = element._asc ? '↑' : '↓';
-
-    const visibleRows = rows.filter(r => r.getAttribute("disp") !== "false");
-
-    visibleRows.sort((a, b) => {
-        const va = getValue(a), vb = getValue(b);
-        return typeof va === 'number' 
-            ? element._asc ? va - vb : vb - va 
-            : element._asc ? va.localeCompare(vb) : vb.localeCompare(va);
-    });
-
-    visibleRows.forEach(row => table.appendChild(row)); 
-}
-
-</script>
-
-
-
-
-
-
-
-
-
-    <?php include APPPATH . '/views/partials/footer.php'; ?>
-
-    <?php include 'admin.php'; ?>
-  </body>
-</html>
